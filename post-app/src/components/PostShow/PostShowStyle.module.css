@@ -1,0 +1,10 @@
+.postShowContainer {
+    display: flex;
+    flex-direction: column;    
+}
+
+.postShow {    
+    margin: 20px;
+    min-height: fit-content;
+}
+

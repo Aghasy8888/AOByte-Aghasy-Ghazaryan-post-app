@@ -1,0 +1,19 @@
+.singlePostContainer {
+    display: grid;
+    grid-template-columns: 4fr 1fr;  
+    grid-auto-flow: column;
+    gap: 0 10px;
+}
+
+.buttonRate {
+    grid-row: 1/3;
+    justify-self: center;
+    align-self: center; 
+    display: flex;     
+}
+
+.averageRate {
+    margin-top: 10px;
+    width: 23px;
+    margin-right: 5px;
+}

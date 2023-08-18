@@ -1,0 +1,26 @@
+.formControl {
+  margin-top: 10px;
+  height: fit-content;
+}
+
+.inputGroup {
+  margin: 30px 20px 0 20px;
+  height: fit-content;
+  width: 50%;
+  min-width: 200px;
+}
+
+.search {
+  height: fit-content;
+  margin-top: auto;
+}
+
+.searchContainer {
+  margin-top: 45px;
+}
+
+@media (max-width: 500px) {
+  .inputGroup {
+    width: 85%;
+  }
+}

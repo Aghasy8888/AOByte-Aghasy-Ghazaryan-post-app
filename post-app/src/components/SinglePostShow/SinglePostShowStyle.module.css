@@ -1,0 +1,67 @@
+.singlePostShow {
+  margin-top: 30px;
+  margin-bottom: 70px;
+  background-color: rgb(73, 71, 71);
+  padding: 10px;
+  border: 1px solid  rgb(73, 71, 71);
+  border-radius: 6px;
+}
+
+
+
+.postContent {
+  font-size: large;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  color: aliceblue;
+}
+
+h4 {
+  color: aliceblue;
+}
+
+
+
+.search {
+  color: rgb(98, 0, 255);
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.formControl {
+  margin-top: 10px;
+  height: fit-content;
+}
+
+.inputGroup {
+  width: 50%;
+}
+
+.comButton {
+  height: fit-content;
+  margin-top: auto;
+}
+
+.buttonSortContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.titleAndRatingContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+}
+
+.titleAndRatingContainer h4 {
+  min-width: 85px;
+}
+
+@media (max-width: 500px) {
+  .inputGroup {
+    width: 90%;
+  }
+
+  .comment {
+    width: 90%;
+  }
+}

@@ -1,0 +1,19 @@
+.rateContainer {
+    display: flex;
+    gap: 20px;
+    width: 16em;
+    margin-bottom: 10px;
+    margin-top: 12px;
+  }
+
+  .rateInput {
+    min-width: 170px;
+  }
+
+  .post {
+    min-width: 170px;
+  }
+
+  .comment {
+    min-width: 202px;
+  }

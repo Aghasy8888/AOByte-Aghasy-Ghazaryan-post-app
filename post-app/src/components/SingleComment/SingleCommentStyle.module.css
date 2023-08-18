@@ -1,0 +1,32 @@
+.container {
+  background-color: rgb(202, 219, 219);
+  border-radius: 15px;
+  padding: 13px;
+  margin: 15px 0px;
+}
+
+.userAndRateContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.userX {
+  color: rgb(107, 71, 58);
+}
+
+.comment {
+  margin-left: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 80%;
+}
+
+.bottomContainer {
+  display: flex;
+  column-gap: 50px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.rating {
+  color: blue;
+}

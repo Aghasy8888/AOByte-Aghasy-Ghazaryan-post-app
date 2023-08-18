@@ -1,0 +1,35 @@
+.navbar {
+  padding: 4px;
+  position: fixed;
+  top: 0;  
+  width: 100vw;
+  height: 38px;
+  z-index: 5555;
+  background-color: rgb(199, 228, 218);;
+}
+
+.link {
+  color: black;
+  font-weight: bold;
+}
+
+.active {
+  color: blue;
+}
+
+.userInfo {
+  font-weight: bold;
+  color: rgb(40, 97, 43);
+}
+
+.linksContainer {
+  margin-left: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.ButtonGroup {
+  position: fixed;
+  top: 0;
+  right: 0;
+}

@@ -1,0 +1,44 @@
+  .pageLink {
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .pageItem:first-child .pageLink {    
+    margin-left: 0;
+    border-bottom-left-radius: 0.25rem;
+    border-top-left-radius: 0.25rem;
+  }
+  
+  .pageItem:last-child .pageLink {
+    border-bottom-right-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+  }
+    
+  .pageItem.active .pageLink,
+  .pageItem.active .pageLink:focus {
+    color: #fff;
+    cursor: default;
+    background-color: #5cb8b7;
+  }
+ 
+  .pageItem.disabled .pageLink {
+    color: #818a91;
+    pointer-events: none;
+    background-color: #fff;
+    border-color: #ddd;
+  }
+   
+  .pageLink {
+    padding: 0.5rem 0.75rem;
+    color: #2e46cb;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    cursor: pointer;
+  }
+   
+  
+  .pageLink:hover {
+    color: #0408f3;
+    background-color: #eceeef;
+    border-color: #ddd;
+  } 
