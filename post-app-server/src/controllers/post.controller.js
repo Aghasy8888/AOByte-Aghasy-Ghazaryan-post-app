@@ -30,7 +30,9 @@ class PostController {
     try {
       const { userId } = res.locals;
       const { query } = req;
-      const dbQuery = {};
+      const dbQuery = {
+        privacy: "PUBLIC",
+      };
 
       const { date, category } = query;
       if (
