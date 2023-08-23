@@ -44,7 +44,7 @@ export function logout(navigate){
         dispatch({type: actionTypes.AUTH_LOADING});
         const jwt = getLocalJWT();
         if(jwt){
-            request(`${apiUrl}/user/sign-out`, "POST", {jwt})
+            request(navigate, `${apiUrl}/user/sign-out`, "POST", {jwt})
             .then(() => {
                 removeToken();
                 dispatch({type: actionTypes.LOGOUT_SUCCESS});
@@ -62,14 +62,13 @@ export function logout(navigate){
     }
 }
 
-export function getUserInfo() {
+export function getUserInfo(navigate) {
     
     return (dispatch) => {
         dispatch({type: actionTypes.AUTH_LOADING});
 
-        request(`${apiUrl}/user`)
+        request(navigate, `${apiUrl}/user`)
         .then(data => {
-            console.log('data', data);
             dispatch({type: actionTypes.GET_USER_INFO_SUCCESS, userInfo: data})
         })
         .catch(error => {

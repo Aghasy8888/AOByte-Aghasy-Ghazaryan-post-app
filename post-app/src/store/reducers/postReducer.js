@@ -2,7 +2,7 @@ import * as actionTypes from "../actions/post/postActionTypes";
 import { LOGOUT_SUCCESS, AUTH_LOADING } from "../actions/user/userActionTypes";
 
 const defaultState = {
-  postsToShow: [],
+  posts: [],
   search: "",
   loading: false,
   successMessage: null,
@@ -40,12 +40,37 @@ const postReducer = (state = defaultState, action) => {
       };
     }
 
+    case actionTypes.SET_SEARCH: {
+      return {
+        ...state,
+        loading: false,
+        search: action.search,
+      };
+    }
+    
+
+
     case actionTypes.GET_POSTS_SUCCESS: {
       return {
         ...state,
         loading: false,
-        postsToShow: action.search ? action.foundPosts : action.posts,
-        search: action.search,
+        posts: action.posts,
+      };
+    }
+
+    case actionTypes.ADDING_POST:
+      return {
+        ...loadingState,
+        addPostSuccess: false,
+      };
+
+    case actionTypes.ADD_POST_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        posts: [...state.posts, action.post],
+        addPostSuccess: true,
+        successMessage: "Post created successfully!",
       };
     }
 

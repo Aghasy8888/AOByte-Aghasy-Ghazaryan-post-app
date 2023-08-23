@@ -17,8 +17,7 @@ const StyledNavbar = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      dispatch(getUserInfo());
-      console.log("user", user);
+      dispatch(getUserInfo(navigate));
     }
   }, [getUserInfo, isAuthenticated]);
 

@@ -125,4 +125,16 @@ request body
 refreshToken: `{string}` (required)
 `}`
 
+#### Create a new post
+request url `API_HOST/post`
+
+request method `POST`
+
+request body 
+`{`
+content: `{String}`, (required)
+privacy: `{String}`, (required)
+category: `{String}` (required)
+`}` 
+
 

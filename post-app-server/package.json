@@ -8,10 +8,12 @@
   "license": "ISC",
   "scripts": {
     "start": "export NODE_ENV=dev|| set NODE_ENV=dev&& node server.js",
-    "prod": "export NODE_ENV=prod|| set NODE_ENV=prod&& node server.js"
+    "prod": "export NODE_ENV=prod|| set NODE_ENV=prod&& node server.js",
+    "dev": "export NODE_ENV=dev|| set NODE_ENV=dev&& nodemon server.js"
   },
   "dependencies": {
     "ajv": "^6.12.3",
+    "bcryptjs": "^2.4.3",
     "bluebird": "^3.7.2",
     "body-parser": "1.19.0",
     "compression": "^1.7.4",
@@ -30,7 +32,9 @@
     "morgan": "^1.10.0",
     "path": "^0.12.7",
     "read-chunk": "^3.2.0",
-    "uuid": "3.3.2",
-    "bcryptjs": "^2.4.3"
+    "uuid": "3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }

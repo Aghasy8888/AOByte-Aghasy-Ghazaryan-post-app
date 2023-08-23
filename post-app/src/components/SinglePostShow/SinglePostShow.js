@@ -14,33 +14,37 @@ import {
 import idGenarator from "../../helpers/idGenarator";
 import styles from "./SinglePostShowStyle.module.css";
 
-
 function SinglePostShow(props) {
   const navigate = useNavigate();
-  const isAuthenticated = useSelector(state => state.authReducer.isAuthenticated)
-  const [comments, setComments] = useState([...props.comments]);
+  const isAuthenticated = useSelector(
+    (state) => state.authReducer.isAuthenticated
+  );
+  const search = useSelector(
+    (state) => state.postReducer.search
+  );
+  const [comments, setComments] = useState(props.post.comments || []);
   const [sort, setSort] = useState({ value: "" });
   const [comTextToBeAdded, setComTextToBeAdded] = useState("");
   const [showComments, setShowComments] = useState(false);
   const [postRatingByUser, setPostRatingByUser] = useState("");
 
-  const { title, content, search } = props;
-  const titleContainsSearch = title
+  const { post } = props;
+  const contentContainsSearch = post.content
     .toLowerCase()
     .includes(search.toLowerCase());
 
-  const titleComponent =
-    search && titleContainsSearch
-      ? separateStr_1ByStr_2(title, search).map(
+  const contentComponent =
+    search && contentContainsSearch
+      ? separateStr_1ByStr_2(post.content, search).map(
           //the last item of the array returned by separateStr_1ByStr_2 is the original searched text
           (splittedPart, index) => {
-            const splittedTitle = separateStr_1ByStr_2(title, search);
+            const splittedContent = separateStr_1ByStr_2(post.content, search);
             const originalSearchedText =
-              splittedTitle[splittedTitle.length - 1];
+              splittedContent[splittedContent.length - 1];
 
-            if (index === splittedTitle.length - 2) {
+            if (index === splittedContent.length - 2) {
               return <span key={index}>{splittedPart}</span>;
-            } else if (index === splittedTitle.length - 1) {
+            } else if (index === splittedContent.length - 1) {
               return "";
             }
 
@@ -52,11 +56,12 @@ function SinglePostShow(props) {
             );
           }
         )
-      : title;
+      : post.content;
 
   useEffect(() => {
-    setComments([...props.comments]);
-  }, [props.comments]);
+    const commentsArray = props.post.comments ? [...props.post.comments] : [];
+    setComments(commentsArray);
+  }, [props.post.comments]);
 
   const handleSort = (option) => {
     setSort(option);
@@ -85,7 +90,7 @@ function SinglePostShow(props) {
     }
 
     if (!isAuthenticated) {
-      navigate('login');
+      navigate("login");
     }
 
     setShowComments(true);
@@ -117,15 +122,16 @@ function SinglePostShow(props) {
 
   return (
     <div className={styles.singlePostShow}>
-      <div className={styles.titleAndRatingContainer}>
-        <h4>{search ? titleComponent : title}</h4>
-        <h4>Rating {5}</h4>
+      <div className={styles.contentAndRatingContainer}>
+        <h6>Rating {post.rating}</h6>
       </div>
 
-      <p className={styles.postContent}>{content}</p>
+      <p className={styles.postContent}>
+        {search ? contentComponent : post.content}
+      </p>
 
       <Rate
-        name='post'
+        name="post"
         ratingByUser={postRatingByUser}
         setRatingByUser={setPostRatingByUser}
       />

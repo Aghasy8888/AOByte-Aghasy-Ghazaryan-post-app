@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PostShow from '../PostShow/PostShow';
 import Search from '../Search/Search';
 import CreatePost from '../CreatePost/CreatePost';
+import { getPosts } from '../../store/actions/post/postActions';
 
-import { pool } from '../../data/postsObject';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 
  function PostApp() {
-  const [postsToShow, setPostsToShow] = useState(pool);
-  const [search, setSearch] = useState('');
-  
-  const getFoundPosts = (foundPosts, search) => {
-    setPostsToShow(foundPosts);
-    setSearch(search);
-  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const posts = useSelector((state) => state.postReducer.posts);
+
+  useEffect(() => {
+    dispatch(getPosts(navigate));
+  }, []);
 
   return (
     <div>  
-      <Search getFoundPosts={getFoundPosts}/>   
+      <Search />   
       <CreatePost /> 
-      <PostShow postsToShow={postsToShow} search={search}/>
+      <PostShow />
     </div>
   );
 }
