@@ -30,9 +30,7 @@ class PostController {
     try {
       const { userId } = res.locals;
       const { query } = req;
-      const dbQuery = {
-        author: userId,
-      };
+      const dbQuery = {};
 
       const { date, category } = query;
       if (
@@ -50,7 +48,7 @@ class PostController {
       const today = new Date();
       let queryCreate_lte;
 
-      switch (query.date) {
+      switch (date) {
         case TODAY:
           queryCreate_lte = today.toLocaleDateString();
           break;
@@ -70,9 +68,9 @@ class PostController {
           break;
       }
 
-      if (query.date) {
+      if (date) {
         const createdAtQuery = {};
-        query.date && (createdAtQuery.$gte = new Date(queryCreate_lte));
+        date && (createdAtQuery.$gte = new Date(queryCreate_lte));
         dbQuery.created_at = createdAtQuery;
       }
 
