@@ -11,7 +11,10 @@ const postController = require("../controllers/post.controller");
 // create post
 postRouter.post("/", auth, validator("post-create"), postController.create);
 
+// delete post
+postRouter.delete('/:id', auth, postController.delete);
+
 // get batch posts
-postRouter.get('/', auth, postController.getBatch);
+postRouter.get('/', auth, validator("category"), postController.getBatch);
 
 module.exports = postRouter;

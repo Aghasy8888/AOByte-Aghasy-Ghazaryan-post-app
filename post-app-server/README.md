@@ -141,6 +141,8 @@ request method `POST`
 
 request body
 `{`
+authorName: `{String}`, (required)
+authorSurname: `{String}`, (required)
 content: `{String}`, (required)
 privacy: `{String}`, (required)
 category: `{String}` (required)
@@ -149,7 +151,25 @@ category: `{String}` (required)
 #### Get all posts or search
 
 request url `API_HOST/post`,
-in case of search add query 
-request url `API_HOST/post` + query 
+in case of search add query
+request url `API_HOST/post` + query
 
 request method `GET`
+
+##### The following filters and sortings are allowed
+
+`{`
+
+category: `OneOf['GENERAL', 'SPORTS', 'NEWS', 'MUSIC', 'POLITICS']`,
+
+search: `{searchString}`,
+
+date: `OneOf['TODAY', 'THIS_WEEK', 'THIS_MONTH']`,
+
+sort: `OneOf['creation_date_oldest_first', 'creation_date_newest_first', 'rating_highest_first', 'rating_lowest_first']`,
+
+`}`
+
+#### Delete the task
+request url `API_HOST/task/:taskId`
+request method `DELETE`

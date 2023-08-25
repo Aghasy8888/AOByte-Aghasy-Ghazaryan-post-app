@@ -6,6 +6,7 @@ const defaultState = {
   search: "",
   loading: false,
   successMessage: null,
+  removePostSuccess: false,
   error: null,
 };
 
@@ -73,6 +74,27 @@ const postReducer = (state = defaultState, action) => {
         successMessage: "Post created successfully!",
       };
     }
+
+    case actionTypes.REMOVING_POST:
+      return {
+        ...loadingState,
+        removePostSuccess: false,
+      };
+
+      case actionTypes.REMOVE_POST_SUCCESS: {
+        const newState = {
+          ...state,
+          loading: false,
+          successMessage: 'Post removed successfully!'
+        };
+
+          const newPosts = state.posts.filter(post => post._id !== action.postId);
+  
+          return {
+            ...newState,
+            posts: newPosts
+          };        
+      }
 
     default:
       return state;

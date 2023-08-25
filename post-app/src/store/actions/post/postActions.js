@@ -1,46 +1,65 @@
-import { pool as posts}  from '../../../data/postsObject';
-import * as actionTypes from './postActionTypes';
-import request from '../../../helpers/request';
+import * as actionTypes from "./postActionTypes";
+import request from "../../../helpers/request";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
+export function getPosts(navigate, params = {}, onlyOwnerPosts) {
+  let url = `${apiUrl}/post`;
 
-export function getPosts(navigate, params={}){
-    let url = `${apiUrl}/post`;
-    
-    let query="?";
-    for(let key in params){
-    query+= `${key}=${params[key]}&`;
-    }
-    
-    if(query !== "?"){ 
-        url+= query
-    }
-    
-    return (dispatch)=>{
-        dispatch({type: actionTypes.LOADING});
+  if (onlyOwnerPosts) {
+    params.onlyOwnerPosts = "true";
+  } else {
+    params.onlyOwnerPosts = "";
+  }
 
-        request(navigate, url)
-        .then(posts => {               
-            dispatch({type: actionTypes.GET_POSTS_SUCCESS, posts});  
-        })
-        .catch(err => {
-            dispatch({type: actionTypes.ERROR, error: err.message});  
-        });
-    }
+  let query = "?";
+  for (let key in params) {
+    query += `${key}=${params[key]}&`;
+  }
+
+  if (query !== "?") {
+    url += query;
+  }
+
+  return (dispatch) => {
+    dispatch({ type: actionTypes.LOADING });
+
+    request(navigate, url, "GET")
+      .then((posts) => {
+        dispatch({ type: actionTypes.GET_POSTS_SUCCESS, posts });
+      })
+      .catch((err) => {
+        dispatch({ type: actionTypes.ERROR, error: err.message });
+      });
+  };
 }
 
-export function addPost(navigate, data){
+export function addPost(navigate, data) {
+  return (dispatch) => {
+    dispatch({ type: actionTypes.ADDING_POST });
 
-    return (dispatch)=>{
-        dispatch({type: actionTypes.ADDING_POST});
+    request(navigate, `${apiUrl}/post`, "POST", data)
+      .then((post) => {
+        dispatch({ type: actionTypes.ADD_POST_SUCCESS, post });
+      })
+      .catch((err) => {
+        dispatch({ type: actionTypes.ERROR, error: err.message });
+      });
+  };
+}
 
-        request(navigate, `${apiUrl}/post`, 'POST', data)
-        .then(post => {
-            dispatch({type: actionTypes.ADD_POST_SUCCESS, post});  
-        })
-        .catch(err => {
-            dispatch({type: actionTypes.ERROR, error: err.message});  
-        });
-    }
+export function removePost(navigate, postId) {
+  console.log("postId", postId);
+
+  return (dispatch) => {
+    dispatch({ type: actionTypes.REMOVING_POST });
+
+    request(navigate, `${apiUrl}/post/${postId}`, "DELETE")
+      .then(() => {
+        dispatch({ type: actionTypes.REMOVE_POST_SUCCESS, postId });
+      })
+      .catch((err) => {
+        dispatch({ type: actionTypes.ERROR, error: err.message });
+      });
+  };
 }

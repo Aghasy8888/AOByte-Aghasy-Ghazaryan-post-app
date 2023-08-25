@@ -10,6 +10,14 @@ const PostSchema = new Schema(
       ref: "User",
       required: true,
     },
+    authorName: {
+      type: String,
+      required: true,
+    },
+    authorSurname: {
+      type: String,
+      required: true,
+    },
     content: {
       type: String,
       required: true,

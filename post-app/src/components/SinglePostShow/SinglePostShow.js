@@ -1,32 +1,38 @@
 import React, { memo, useEffect, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+
 import Sort from "../Sort/Sort";
 import SingleComment from "../SingleComment/SingleComment";
 import Rate from "../Rate/Rate";
 import { order } from "../PostList/sortOptions";
 import {
+  capitalizeFirstLetter,
   isOnlySpaces,
   separateStr_1ByStr_2,
   sort as sortComments,
 } from "../../helpers/helpers";
 import idGenarator from "../../helpers/idGenarator";
+
 import styles from "./SinglePostShowStyle.module.css";
+import DeleteModal from "../DeleteModal/DeleteModal";
 
 function SinglePostShow(props) {
   const navigate = useNavigate();
+  const user = useSelector((state) => state.authReducer.userInfo);
   const isAuthenticated = useSelector(
     (state) => state.authReducer.isAuthenticated
   );
-  const search = useSelector(
-    (state) => state.postReducer.search
-  );
+  const search = useSelector((state) => state.postReducer.search);
   const [comments, setComments] = useState(props.post.comments || []);
   const [sort, setSort] = useState({ value: "" });
   const [comTextToBeAdded, setComTextToBeAdded] = useState("");
   const [showComments, setShowComments] = useState(false);
   const [postRatingByUser, setPostRatingByUser] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const { post } = props;
   const contentContainsSearch = post.content
@@ -122,8 +128,18 @@ function SinglePostShow(props) {
 
   return (
     <div className={styles.singlePostShow}>
-      <div className={styles.contentAndRatingContainer}>
-        <h6>Rating {post.rating}</h6>
+      {showDeleteModal && (
+        <DeleteModal post={post} setShowDeleteModal={setShowDeleteModal} />
+      )}
+
+      <div className={styles.postInfoPrivacyContainer}>
+        <div>
+          <span>
+            {post.authorName} {post.authorSurname}
+          </span>
+          <span> (Rating {post.rating})</span>
+        </div>
+        <div>{capitalizeFirstLetter(post.privacy)}</div>
       </div>
 
       <p className={styles.postContent}>
@@ -162,30 +178,40 @@ function SinglePostShow(props) {
           {commentComponents}
         </>
       )}
-
-      <InputGroup className={styles.inputGroup}>
-        <Form.Control
-          className={styles.formControl}
-          placeholder="Add a comment..."
-          value={comTextToBeAdded}
-          onChange={(event) => {
-            setComTextToBeAdded(event.target.value);
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              addComment();
-            }
-          }}
-        />
-        <Button
-          className={styles.comButton}
-          variant={`${!comTextToBeAdded ? "secondary" : "primary"}`}
-          onClick={() => addComment()}
-          disabled={!comTextToBeAdded}
-        >
-          Comment
-        </Button>
-      </InputGroup>
+      <div className={styles.inputGroupAndBtnsContainer}>
+        <InputGroup className={styles.inputGroup}>
+          <Form.Control
+            className={styles.formControl}
+            placeholder="Add a comment..."
+            value={comTextToBeAdded}
+            onChange={(event) => {
+              setComTextToBeAdded(event.target.value);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                addComment();
+              }
+            }}
+          />
+          <Button
+            className={styles.comButton}
+            variant={`${!comTextToBeAdded ? "secondary" : "primary"}`}
+            onClick={() => addComment()}
+            disabled={!comTextToBeAdded}
+          >
+            Comment
+          </Button>
+        </InputGroup>
+        {user._id === post.author && (
+          <Button
+            className={styles.deleteButton}
+            variant="danger"
+            onClick={() => setShowDeleteModal(true)}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </Button>
+        )}
+      </div>
     </div>
   );
 }

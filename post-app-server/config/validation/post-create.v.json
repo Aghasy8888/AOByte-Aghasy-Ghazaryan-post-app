@@ -5,6 +5,14 @@
     "body": {
       "type": "object",
       "properties": {
+        "authorName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authorSurname": {
+          "type": "string",
+          "minLength": 1
+        },
         "content": {
           "type": "string",
           "minLength": 1
@@ -17,7 +25,9 @@
         }
       },
       "required": [
-        "content"
+        "content",
+        "authorSurname",
+        "authorName"
       ]
     }
   },

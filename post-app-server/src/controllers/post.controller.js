@@ -18,13 +18,27 @@ class PostController {
         author: ObjectId(res.locals.userId),
         ...req.body,
       };
-
+      
       const post = await postSchema.create(postData);
       res.json(post);
     } catch (err) {
       next(err);
     }
   };
+
+  delete = async (req, res, next) => {
+    try {
+        const post = await postSchema.findOneAndDelete({
+            _id: req.params.id,
+            author: res.locals.userId,
+        });
+        
+        if (!post) throw errorConfig.postNotFound;
+        res.json({success: true});
+    } catch (err) {
+        next(err);
+    }
+}
 
   getBatch = async (req, res, next) => {
     try {
@@ -34,10 +48,17 @@ class PostController {
         privacy: "PUBLIC",
       };
 
-      const { date, category } = query;
+      const { date, category, onlyOwnerPosts } = query;
+
+      if (onlyOwnerPosts) {
+        dbQuery.author = userId;
+        delete dbQuery.privacy;
+      }
+      
       if (
-        category &&
-        /^general$|^sports$|^news$|^music$|^politics$/gi.test(category)
+        category
+        //  &&
+        // /^general$|^sports$|^news$|^music$|^politics$/gi.test(category)
       ) {
         dbQuery.category = category;
       }

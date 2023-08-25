@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import { privacyOptions } from "./privacyOptions";
+import {
+  optionValues as privacyValues,
+  privacyOptions,
+} from "./privacyOptions";
+import { optionValues as categoryValues } from "./categoryOptions";
 import { categoryOptions } from "./categoryOptions";
 import { addPost, getPosts } from "../../store/actions/post/postActions";
 
@@ -12,14 +16,13 @@ import styles from "./CreatePostStyle.module.css";
 function CreatePost() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [showModal, setShowModal] = useState(false);
-  const [author, setAuthor] = useState("");
+  const [showModal, setShowModal] = useState(false); 
   const [privacy, setPrivacy] = useState({
-    value: "PRIVATE",
+    value: privacyValues.PRIVATE,
     label: "Private",
   });
   const [category, setCategory] = useState({
-    value: "GENERAL",
+    value: categoryValues.GENERAL,
     label: "General",
   });
   const [content, setContent] = useState("");
@@ -27,7 +30,6 @@ function CreatePost() {
     (state) => state.authReducer.isAuthenticated
   );
   const user = useSelector((state) => state.authReducer.userInfo);
-
   const handlePrivacy = (option) => {
     setPrivacy(option);
   };
@@ -40,6 +42,8 @@ function CreatePost() {
     content.trim();
 
     const data = {
+      authorName: user.name,
+      authorSurname: user.surname,
       content,
       privacy: privacy.value,
       category: category.value,
@@ -47,13 +51,22 @@ function CreatePost() {
 
     dispatch(addPost(navigate, data));
     setShowModal(false);
+    setPrivacy({
+      value: privacyValues.PRIVATE,
+      label: "Private",
+    });
+    setCategory({
+      value: categoryValues.GENERAL,
+      label: "General",
+    });
     dispatch(getPosts(navigate));
+    if (privacy.value === privacyValues.PRIVATE) {
+      navigate("/myPosts");
+    }
   };
 
   const showCreatePostModal = () => {
-    
     if (isAuthenticated) {
-      setAuthor(user._id);
       setShowModal(true);
     } else {
       navigate("/login");
@@ -62,6 +75,7 @@ function CreatePost() {
 
   return (
     <>
+
       {!showModal && (
         <div className={styles.createPost}>
           <div className={isAuthenticated ? styles.username : styles.sighIn}>

@@ -10,7 +10,7 @@ import { SET_SEARCH } from "../../store/actions/post/postActionTypes";
 
 import styles from "./SearchStyle.module.css";
 
-function Search() {
+function Search({onlyOwnerPosts}) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
@@ -38,7 +38,7 @@ function Search() {
       sort: sort.value,
     };
 
-    dispatch(getPosts(navigate, searchData));
+    dispatch(getPosts(navigate, searchData, onlyOwnerPosts));
     dispatch({type: SET_SEARCH, search});
   };
 
