@@ -72,7 +72,6 @@ function PostList(props) {
       removePost={removePost}
       key={post.id}
       id={post.id}
-      title={post.title}
       content={post.content}
       rating={post.rating}
     />

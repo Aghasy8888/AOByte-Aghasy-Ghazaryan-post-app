@@ -2,45 +2,55 @@ import React, { memo, useEffect, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+
 import Sort from "../Sort/Sort";
 import SingleComment from "../SingleComment/SingleComment";
 import Rate from "../Rate/Rate";
 import { order } from "../PostList/sortOptions";
 import {
+  capitalizeFirstLetter,
   isOnlySpaces,
   separateStr_1ByStr_2,
   sort as sortComments,
 } from "../../helpers/helpers";
 import idGenarator from "../../helpers/idGenarator";
-import styles from "./SinglePostShowStyle.module.css";
 
+import styles from "./SinglePostShowStyle.module.css";
+import DeleteModal from "../DeleteModal/DeleteModal";
 
 function SinglePostShow(props) {
   const navigate = useNavigate();
-  const isAuthenticated = useSelector(state => state.authReducer.isAuthenticated)
-  const [comments, setComments] = useState([...props.comments]);
+  const user = useSelector((state) => state.authReducer.userInfo);
+  const isAuthenticated = useSelector(
+    (state) => state.authReducer.isAuthenticated
+  );
+  const search = useSelector((state) => state.postReducer.search);
+  const [comments, setComments] = useState(props.post.comments || []);
   const [sort, setSort] = useState({ value: "" });
   const [comTextToBeAdded, setComTextToBeAdded] = useState("");
   const [showComments, setShowComments] = useState(false);
   const [postRatingByUser, setPostRatingByUser] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const { title, content, search } = props;
-  const titleContainsSearch = title
+  const { post } = props;
+  const contentContainsSearch = post.content
     .toLowerCase()
     .includes(search.toLowerCase());
 
-  const titleComponent =
-    search && titleContainsSearch
-      ? separateStr_1ByStr_2(title, search).map(
+  const contentComponent =
+    search && contentContainsSearch
+      ? separateStr_1ByStr_2(post.content, search).map(
           //the last item of the array returned by separateStr_1ByStr_2 is the original searched text
           (splittedPart, index) => {
-            const splittedTitle = separateStr_1ByStr_2(title, search);
+            const splittedContent = separateStr_1ByStr_2(post.content, search);
             const originalSearchedText =
-              splittedTitle[splittedTitle.length - 1];
+              splittedContent[splittedContent.length - 1];
 
-            if (index === splittedTitle.length - 2) {
+            if (index === splittedContent.length - 2) {
               return <span key={index}>{splittedPart}</span>;
-            } else if (index === splittedTitle.length - 1) {
+            } else if (index === splittedContent.length - 1) {
               return "";
             }
 
@@ -52,11 +62,12 @@ function SinglePostShow(props) {
             );
           }
         )
-      : title;
+      : post.content;
 
   useEffect(() => {
-    setComments([...props.comments]);
-  }, [props.comments]);
+    const commentsArray = props.post.comments ? [...props.post.comments] : [];
+    setComments(commentsArray);
+  }, [props.post.comments]);
 
   const handleSort = (option) => {
     setSort(option);
@@ -85,7 +96,7 @@ function SinglePostShow(props) {
     }
 
     if (!isAuthenticated) {
-      navigate('login');
+      navigate("login");
     }
 
     setShowComments(true);
@@ -117,15 +128,26 @@ function SinglePostShow(props) {
 
   return (
     <div className={styles.singlePostShow}>
-      <div className={styles.titleAndRatingContainer}>
-        <h4>{search ? titleComponent : title}</h4>
-        <h4>Rating {5}</h4>
+      {showDeleteModal && (
+        <DeleteModal post={post} setShowDeleteModal={setShowDeleteModal} />
+      )}
+
+      <div className={styles.postInfoPrivacyContainer}>
+        <div>
+          <span>
+            {post.authorName} {post.authorSurname}
+          </span>
+          <span> (Rating {post.rating})</span>
+        </div>
+        <div>{capitalizeFirstLetter(post.privacy)}</div>
       </div>
 
-      <p className={styles.postContent}>{content}</p>
+      <p className={styles.postContent}>
+        {search ? contentComponent : post.content}
+      </p>
 
       <Rate
-        name='post'
+        name="post"
         ratingByUser={postRatingByUser}
         setRatingByUser={setPostRatingByUser}
       />
@@ -156,30 +178,49 @@ function SinglePostShow(props) {
           {commentComponents}
         </>
       )}
-
-      <InputGroup className={styles.inputGroup}>
-        <Form.Control
-          className={styles.formControl}
-          placeholder="Add a comment..."
-          value={comTextToBeAdded}
-          onChange={(event) => {
-            setComTextToBeAdded(event.target.value);
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              addComment();
-            }
-          }}
-        />
-        <Button
-          className={styles.comButton}
-          variant={`${!comTextToBeAdded ? "secondary" : "primary"}`}
-          onClick={() => addComment()}
-          disabled={!comTextToBeAdded}
-        >
-          Comment
-        </Button>
-      </InputGroup>
+      <div className={styles.inputGroupAndBtnsContainer}>
+        <InputGroup className={styles.inputGroup}>
+          <Form.Control
+            className={styles.formControl}
+            placeholder="Add a comment..."
+            value={comTextToBeAdded}
+            onChange={(event) => {
+              setComTextToBeAdded(event.target.value);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                addComment();
+              }
+            }}
+          />
+          <Button
+            className={styles.comButton}
+            variant={`${!comTextToBeAdded ? "secondary" : "primary"}`}
+            onClick={() => addComment()}
+            disabled={!comTextToBeAdded}
+          >
+            Comment
+          </Button>
+        </InputGroup>
+        {user._id === post.author && (
+          <>
+            <Button
+              className={styles.deleteButton}
+              variant="info"
+              onClick={() => setShowDeleteModal(true)}
+            >
+              <FontAwesomeIcon icon={faEdit} />
+            </Button>
+            <Button
+              className={styles.deleteButton}
+              variant="danger"
+              onClick={() => setShowDeleteModal(true)}
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </Button>
+          </>
+        )}
+      </div>
     </div>
   );
 }
