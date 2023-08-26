@@ -1,9 +1,9 @@
 import React, { memo, useEffect, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 
 import Sort from "../Sort/Sort";
 import SingleComment from "../SingleComment/SingleComment";
@@ -203,13 +203,22 @@ function SinglePostShow(props) {
           </Button>
         </InputGroup>
         {user._id === post.author && (
-          <Button
-            className={styles.deleteButton}
-            variant="danger"
-            onClick={() => setShowDeleteModal(true)}
-          >
-            <FontAwesomeIcon icon={faTrash} />
-          </Button>
+          <>
+            <Button
+              className={styles.deleteButton}
+              variant="info"
+              onClick={() => setShowDeleteModal(true)}
+            >
+              <FontAwesomeIcon icon={faEdit} />
+            </Button>
+            <Button
+              className={styles.deleteButton}
+              variant="danger"
+              onClick={() => setShowDeleteModal(true)}
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </Button>
+          </>
         )}
       </div>
     </div>
