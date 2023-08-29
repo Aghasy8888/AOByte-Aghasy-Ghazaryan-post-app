@@ -4,6 +4,7 @@
 }
 
 .inputGroup {
+  display: flex;
   margin: 30px 20px 0 20px;
   height: fit-content;
   width: 50%;
@@ -19,8 +20,48 @@
   margin-top: 45px;
 }
 
+.filterModal {
+  width: 70%;
+  margin: 40px auto 0;
+  display: block;
+  padding: 10px 15px;
+  position: initial;
+  background-color: rgb(73, 71, 71);
+  border-radius: 10px;
+  color: rgb(221, 225, 228);
+}
+
+.dropDowns {
+  display: flex;
+  justify-content: start;
+  gap: 20px;
+}
+
+.dropdownButton {
+  margin-bottom: 20px;
+}
+
+.submitBtn {
+  width: 100%;
+}
+
+.titleAndXButton {
+  display: grid;
+  grid-template-columns: 15fr 1fr;
+  column-gap: 20px;
+  justify-content: end;
+}
+
+.title {
+  justify-self: center;
+}
+
 @media (max-width: 500px) {
   .inputGroup {
     width: 85%;
+  }
+
+  .filterModal {
+    width: 93%;
   }
 }

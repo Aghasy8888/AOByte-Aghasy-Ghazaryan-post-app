@@ -6,7 +6,7 @@ import styles from './PaginationStyle.module.css'
 
 
 
-function Pagination({total, currentPage, handlePageChange}) {    
+function Pagination({total, currentPage, handlePageChange}) {  
     const numbOfPages = Math.ceil(total);
     const pagesCut = getPagesCut({
         numbOfPages,
@@ -15,10 +15,10 @@ function Pagination({total, currentPage, handlePageChange}) {
     });
 
     const pages = arrayInRange(pagesCut.start, pagesCut.end);
-    const isFirstPage = currentPage === 1 || total === 0;
-    const isLastPage = currentPage === numbOfPages || total === 0;
+    const isFirstPage = currentPage === 1 || numbOfPages === 0;
+    const isLastPage = currentPage === numbOfPages || numbOfPages === 0;
 
-    if (total === 1) {
+    if (numbOfPages === 1) {
         handlePageChange(1)
     }
     
@@ -60,9 +60,9 @@ function Pagination({total, currentPage, handlePageChange}) {
             />
 
             <PaginationItem 
-                page={`Last (${total || 0})`}
+                page={`Last (${numbOfPages || 0})`}
                 currentPage={currentPage}
-                handlePageChange={() => handlePageChange(total)}
+                handlePageChange={() => handlePageChange(numbOfPages)}
                 isDisabled={isLastPage}
             />
         </div>

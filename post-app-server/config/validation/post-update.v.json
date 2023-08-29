@@ -1,24 +1,19 @@
 {
-  "title": "create task",
+  "title": "update post",
   "type": "object",
   "properties": {
     "body": {
       "type": "object",
       "properties": {
-        "title": {
+        "content": {
           "type": "string",
           "minLength": 1
         },
-        "description": {
+        "privacy": {
           "type": "string"
         },
-        "status": {
-          "type": "string",
-          "enum": ["active", "done"]
-        },
-        "date": {
-          "type": "string",
-          "format": "date"
+        "category": {
+          "type": "string"
         }
       }
     }
