@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import {
-  optionValues as privacyValues,
-} from "./privacyOptions";
+import { optionValues as privacyValues } from "./privacyOptions";
 import { optionValues as categoryValues } from "./categoryOptions";
 import { addPost, getPosts } from "../../store/actions/post/postActions";
-import CreateEditPostModal from "../CreateEditPostModal/CreateEditPostModal";
 
 import { Button } from "react-bootstrap";
 import styles from "./CreatePostStyle.module.css";
+import CreateEditPostModal from "../CreateEditPostModal/CreateEditPostModal";
 
 function CreatePost() {
   const navigate = useNavigate();
@@ -65,6 +63,16 @@ function CreatePost() {
     }
   };
 
+  const handlePrivacy = (option) => {
+    setPrivacy(option);
+  };
+  const handleCategory = (option) => {
+    setCategory(option);
+  };
+  const handleContent = (value) => {
+    setContent(value);
+  };
+
   return (
     <>
       {!showModal && (
@@ -88,15 +96,17 @@ function CreatePost() {
 
       {showModal && (
         <CreateEditPostModal
-          onPost={onPost}
-          content={{ data: content, setContent }}
-          privacy={{ data: privacy, setPrivacy }}
-          category={{ data: category, setCategory }}
+          onAction={onPost}
+          contentValue={content}
+          content={{ data: content, handleContent }}
+          privacy={{ data: privacy, handlePrivacy }}
+          category={{ data: category, handleCategory }}
           setShowModal={setShowModal}
           modalnfo={{
             submitBtn: "Post",
             title: "Create post",
           }}
+          disabled={!content.trim()}
         />
       )}
     </>

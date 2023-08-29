@@ -17,4 +17,7 @@ postRouter.delete('/:id', auth, postController.delete);
 // get batch posts
 postRouter.get('/', auth, validator("category"), postController.getBatch);
 
+// update post
+postRouter.put('/:id', auth, validator('post-update'), postController.update);
+
 module.exports = postRouter;

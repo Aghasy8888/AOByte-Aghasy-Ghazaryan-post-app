@@ -18,7 +18,7 @@ class PostController {
         author: ObjectId(res.locals.userId),
         ...req.body,
       };
-      
+
       const post = await postSchema.create(postData);
       res.json(post);
     } catch (err) {
@@ -28,15 +28,35 @@ class PostController {
 
   delete = async (req, res, next) => {
     try {
-        const post = await postSchema.findOneAndDelete({
+      const post = await postSchema.findOneAndDelete({
+        _id: req.params.id,
+        author: res.locals.userId,
+      });
+
+      if (!post) throw errorConfig.postNotFound;
+      res.json({ success: true });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  update = async (req, res, next) => {
+    try {
+        const post = await postSchema.findOne({
             _id: req.params.id,
             author: res.locals.userId,
         });
-        
         if (!post) throw errorConfig.postNotFound;
-        res.json({success: true});
+        
+        const {content, privacy, category} = req.body;
+        content && ( post.content = content);
+        privacy && (post.privacy = privacy);
+        category && ( post.category = category);
+        
+        await post.save();
+        res.json(post.toObject());
     } catch (err) {
-        next(err);
+        next(err)
     }
 }
 
@@ -54,12 +74,8 @@ class PostController {
         dbQuery.author = userId;
         delete dbQuery.privacy;
       }
-      
-      if (
-        category
-        //  &&
-        // /^general$|^sports$|^news$|^music$|^politics$/gi.test(category)
-      ) {
+
+      if (category) {
         dbQuery.category = category;
       }
 

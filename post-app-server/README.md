@@ -170,6 +170,16 @@ sort: `OneOf['creation_date_oldest_first', 'creation_date_newest_first', 'rating
 
 `}`
 
-#### Delete the task
-request url `API_HOST/task/:taskId`
+#### Delete the post
+request url `API_HOST/post/:postId`
 request method `DELETE`
+
+#### Update a post
+request url `API_HOST/post/:postId`
+request method `PUT`
+request body 
+`{`
+content: `{String}`,
+privacy: `{String}`,
+category: `{String}`
+`}`  

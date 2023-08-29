@@ -35,6 +35,7 @@ export function getPosts(navigate, params = {}, onlyOwnerPosts) {
 }
 
 export function addPost(navigate, data) {
+  
   return (dispatch) => {
     dispatch({ type: actionTypes.ADDING_POST });
 
@@ -49,7 +50,6 @@ export function addPost(navigate, data) {
 }
 
 export function removePost(navigate, postId) {
-  console.log("postId", postId);
 
   return (dispatch) => {
     dispatch({ type: actionTypes.REMOVING_POST });
@@ -62,4 +62,19 @@ export function removePost(navigate, postId) {
         dispatch({ type: actionTypes.ERROR, error: err.message });
       });
   };
+}
+
+export function editPost(navigate, postId, data){
+
+  return (dispatch)=>{
+      dispatch({type: actionTypes.EDITING_POST});
+
+      request(navigate, `${apiUrl}/post/${postId}`, 'PUT', data)
+      .then(editedPost=> {
+          dispatch({type: actionTypes.EDIT_POST_SUCCESS, editedPost});  
+      })
+      .catch(err => {
+          dispatch({type: actionTypes.ERROR, error: err.message});  
+      });
+  }
 }

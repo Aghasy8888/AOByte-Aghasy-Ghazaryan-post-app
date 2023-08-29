@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { getPosts } from "../../store/actions/post/postActions";
@@ -11,14 +11,15 @@ import styles from "./MyPostsStyle.module.css";
 export default function MyPosts() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const searchData = useSelector((state) => state.postReducer.searchData);
 
   useEffect(() => {
-    dispatch(getPosts(navigate, {}, true));
+    dispatch(getPosts(navigate, searchData, true));
   }, []);
 
   return (
     <div className={styles.myPosts}>
-      <Search onlyOwnerPosts={true}/>
+      <Search onlyOwnerPosts={true} />
       <PostShow />
     </div>
   );

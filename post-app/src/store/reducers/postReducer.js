@@ -4,9 +4,11 @@ import { LOGOUT_SUCCESS, AUTH_LOADING } from "../actions/user/userActionTypes";
 const defaultState = {
   posts: [],
   search: "",
+  searchData: {},
   loading: false,
   successMessage: null,
   removePostSuccess: false,
+  editPostSuccess: false,
   error: null,
 };
 
@@ -46,6 +48,14 @@ const postReducer = (state = defaultState, action) => {
         ...state,
         loading: false,
         search: action.search,
+      };
+    }
+
+    case actionTypes.SET_SEARCH_DATA: {
+      return {
+        ...state,
+        loading: false,
+        searchData: action.searchData,
       };
     }
     
@@ -95,6 +105,37 @@ const postReducer = (state = defaultState, action) => {
             posts: newPosts
           };        
       }
+
+      case actionTypes.EDITING_POST: {
+        return {
+          ...loadingState,
+          editPostSuccess: false,
+        };
+      }
+
+      
+
+      case actionTypes.EDIT_POST_SUCCESS: {
+        const newState = {
+          ...state,
+          loading: false,
+          editPostSuccess: true,
+          successMessage: 'Post edited successfully',
+        }
+
+       
+          const posts = [...state.posts];
+          const foundIndex = posts.findIndex(post => post._id === action.editedPost._id);
+          posts[foundIndex] = action.editedPost;
+  
+          return {
+            ...newState,
+            posts,
+          };       
+  
+      }
+
+     
 
     default:
       return state;

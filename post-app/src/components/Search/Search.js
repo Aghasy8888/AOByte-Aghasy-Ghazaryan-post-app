@@ -6,7 +6,7 @@ import { InputGroup, Form, Button, Modal, DropdownButton, Dropdown } from "react
 import { getPosts } from "../../store/actions/post/postActions";
 import { categoryOptions, dateOptions } from "./filterOptions";
 import { sortOptions } from "./sortOptions";
-import { SET_SEARCH } from "../../store/actions/post/postActionTypes";
+import { SET_SEARCH, SET_SEARCH_DATA } from "../../store/actions/post/postActionTypes";
 
 import styles from "./SearchStyle.module.css";
 
@@ -40,6 +40,7 @@ function Search({onlyOwnerPosts}) {
 
     dispatch(getPosts(navigate, searchData, onlyOwnerPosts));
     dispatch({type: SET_SEARCH, search});
+    dispatch({type: SET_SEARCH_DATA, searchData});
   };
 
   return (
