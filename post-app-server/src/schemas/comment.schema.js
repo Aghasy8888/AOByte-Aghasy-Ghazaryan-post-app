@@ -3,7 +3,8 @@ const mongoosePaginate = require("mongoose-paginate");
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
-const CommentSchema = new Schema({
+const CommentSchema = new Schema(
+  {
     author: {
       type: ObjectId,
       ref: "User",
@@ -43,49 +44,9 @@ const CommentSchema = new Schema({
       createdAt: "created_at",
       updatedAt: "updated_at",
     },
-});
-
-const PostSchema = new Schema(
-  {
-    author: {
-      type: ObjectId,
-      ref: "User",
-      required: true,
-    },
-    authorName: {
-      type: String,
-      required: true,
-    },
-    authorSurname: {
-      type: String,
-      required: true,
-    },
-    content: {
-      type: String,
-      required: true,
-    },
-    privacy: {
-      type: String,
-      required: true,
-    },
-    category: {
-      type: String,
-      required: true,
-    },
-    rating: {
-      type: Number,
-      default: 0,
-    },
-    comments: [CommentSchema],
-  },
-  {
-    timestamps: {
-      createdAt: "created_at",
-      updatedAt: "updated_at",
-    },
   }
 );
 
-PostSchema.plugin(mongoosePaginate);
+CommentSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model("Post", PostSchema);
+module.exports = mongoose.model("Comment", CommentSchema);

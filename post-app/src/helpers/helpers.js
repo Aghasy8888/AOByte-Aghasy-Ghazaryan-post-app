@@ -1,3 +1,22 @@
+export function makePostChanges(state, action, successMessage, actionSuccess) {
+  const newState = {
+    ...state,
+    loading: false,
+    [actionSuccess]: true,
+    successMessage: successMessage,
+  }
+
+ 
+    const posts = [...state.posts];
+    const foundIndex = posts.findIndex(post => post._id === action.post._id);
+    posts[foundIndex] = action.post;
+
+    return {
+      ...newState,
+      posts,
+    };  
+}
+
 export function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }

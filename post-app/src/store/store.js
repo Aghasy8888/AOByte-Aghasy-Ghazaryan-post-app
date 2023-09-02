@@ -5,7 +5,6 @@ import logger from 'redux-logger';
 import postReducer from './reducers/postReducer';
 import authReducer from './reducers/authReducer';
 
-
 const middlewaresArr = [thunk];
 if(process.env.NODE_ENV === "development"){
     middlewaresArr.push(logger);

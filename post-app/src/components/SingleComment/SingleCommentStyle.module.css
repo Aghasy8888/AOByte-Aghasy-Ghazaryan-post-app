@@ -10,8 +10,9 @@
   justify-content: space-between;
 }
 
-.userX {
+.username {
   color: rgb(107, 71, 58);
+  margin-left: 15px;
 }
 
 .comment {
@@ -29,4 +30,34 @@
 
 .rating {
   color: blue;
+}
+
+.replyContainer {
+  margin-left: 64px;
+  width: 80%;
+}
+
+.replyBigContainer {
+  margin-left: 64px;
+  margin-top: 15px;
+  background-color: rgb(147, 173, 173);;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.textArea {
+  margin-bottom: 10px;
+  margin-top: 10px;
+  background-color: rgb(217, 225, 233);
+  border: none;
+  font-size: 18px;
+}
+
+.showRepliesButton, .closeRepliesButton {
+  margin-left: 15px;
+  margin-top: 10px;
+}
+
+.cancelBtn {
+  margin-left: 10px;
 }

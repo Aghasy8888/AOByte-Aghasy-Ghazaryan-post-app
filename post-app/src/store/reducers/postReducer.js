@@ -1,3 +1,4 @@
+import { makePostChanges } from "../../helpers/helpers";
 import * as actionTypes from "../actions/post/postActionTypes";
 import { LOGOUT_SUCCESS, AUTH_LOADING } from "../actions/user/userActionTypes";
 
@@ -9,6 +10,8 @@ const defaultState = {
   successMessage: null,
   removePostSuccess: false,
   editPostSuccess: false,
+  addedCommentSuccess: false,
+  removeCommentSuccess: false,
   error: null,
 };
 
@@ -58,8 +61,6 @@ const postReducer = (state = defaultState, action) => {
         searchData: action.searchData,
       };
     }
-    
-
 
     case actionTypes.GET_POSTS_SUCCESS: {
       return {
@@ -91,51 +92,56 @@ const postReducer = (state = defaultState, action) => {
         removePostSuccess: false,
       };
 
-      case actionTypes.REMOVE_POST_SUCCESS: {
-        const newState = {
-          ...state,
-          loading: false,
-          successMessage: 'Post removed successfully!'
-        };
+    case actionTypes.REMOVE_POST_SUCCESS: {
+      const newState = {
+        ...state,
+        loading: false,
+        successMessage: "Post removed successfully!",
+      };
 
-          const newPosts = state.posts.filter(post => post._id !== action.postId);
-  
-          return {
-            ...newState,
-            posts: newPosts
-          };        
-      }
+      const newPosts = state.posts.filter((post) => post._id !== action.postId);
 
-      case actionTypes.EDITING_POST: {
-        return {
-          ...loadingState,
-          editPostSuccess: false,
-        };
-      }
+      return {
+        ...newState,
+        posts: newPosts,
+      };
+    }
 
-      
+    case actionTypes.EDITING_POST: {
+      return {
+        ...loadingState,
+        editPostSuccess: false,
+      };
+    }
 
-      case actionTypes.EDIT_POST_SUCCESS: {
-        const newState = {
-          ...state,
-          loading: false,
-          editPostSuccess: true,
-          successMessage: 'Post edited successfully',
-        }
+    case actionTypes.EDIT_POST_SUCCESS: {
+      const message = "Post edited successfully";
+      return makePostChanges(state, action, message, "editPostSuccess");
+    }
 
-       
-          const posts = [...state.posts];
-          const foundIndex = posts.findIndex(post => post._id === action.editedPost._id);
-          posts[foundIndex] = action.editedPost;
-  
-          return {
-            ...newState,
-            posts,
-          };       
-  
-      }
+    case actionTypes.ADDING_COMMENT: {
+      return {
+        ...loadingState,
+        addedCommentSuccess: false,
+      };
+    }
 
-     
+    case actionTypes.ADD_COMMENT_SUCCESS: {
+      const message = "Comment was added successfully.";
+      return makePostChanges(state, action, message, "addedCommentSuccess");
+    }
+
+    case actionTypes.REMOVING_COMMENT: {
+      return {
+        ...loadingState,
+        removeCommentSuccess: false,
+      };
+    }
+
+    case actionTypes.REMOVE_COMMENT_SUCCESS: {
+      const message = "Comment was removed successfully.";
+      return makePostChanges(state, action, message, "removeCommentSuccess");
+    }
 
     default:
       return state;

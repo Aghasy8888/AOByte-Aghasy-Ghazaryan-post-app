@@ -1,6 +1,7 @@
 const errorConfig = require("../../config/error.config");
 const ObjectId = require("mongoose").Types.ObjectId;
 const postSchema = require("../schemas/post.schema");
+const commentSchema = require("../schemas/comment.schema");
 const {
   TODAY,
   THIS_WEEK,
@@ -42,23 +43,115 @@ class PostController {
 
   update = async (req, res, next) => {
     try {
-        const post = await postSchema.findOne({
-            _id: req.params.id,
-            author: res.locals.userId,
-        });
-        if (!post) throw errorConfig.postNotFound;
-        
-        const {content, privacy, category} = req.body;
-        content && ( post.content = content);
-        privacy && (post.privacy = privacy);
-        category && ( post.category = category);
-        
-        await post.save();
-        res.json(post.toObject());
+      const post = await postSchema.findOne({
+        _id: req.params.id,
+        author: res.locals.userId,
+      });
+      if (!post) throw errorConfig.postNotFound;
+
+      const { content, privacy, category } = req.body;
+      content && (post.content = content);
+      privacy && (post.privacy = privacy);
+      category && (post.category = category);
+
+      await post.save();
+      res.json(post.toObject());
     } catch (err) {
-        next(err)
+      next(err);
     }
-}
+  };
+
+  addComment = async (req, res, next) => {
+    try {
+      let parentCommentIndex;
+      const post = await postSchema.findOne({
+        _id: req.params.id,
+      });
+      if (!post) throw errorConfig.postNotFound;
+
+      const commentData = {
+        author: ObjectId(res.locals.userId),
+        ...req.body,
+      };
+
+      const comment = await commentSchema.create(commentData);
+
+      const { parentCommentId } = req.body;
+      if (parentCommentId) {
+        const parentComment = await commentSchema.findOne({
+          _id: parentCommentId,
+        });
+
+        parentComment.replies = [...parentComment.replies, comment];
+        parentComment.save();
+        parentCommentIndex = post.comments.findIndex((comment) => {
+          return comment._id.toString() == parentCommentId.toString();
+        });
+
+        post.comments[parentCommentIndex] = parentComment;
+      } else {
+        post.comments = [...post.comments, comment];
+      }
+      await post.save();
+      res.json(post.toObject());
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  removeComment = async (req, res, next) => {
+    try {
+      let parentCommentIndex;
+      const post = await postSchema.findOne({
+        _id: req.params.id,
+      });
+      if (!post) throw errorConfig.postNotFound;
+
+      const foundComment = await commentSchema.findOne({
+        _id: req.body.commentId,
+      });
+      if (!foundComment) throw errorConfig.commentNotFound;
+
+      const { parentCommentId } = req.body;
+      console.log('parentCommentId', parentCommentId);
+      if (parentCommentId) {
+        console.log('here i am');
+        const parentComment = await commentSchema.findOne({
+          _id: parentCommentId,
+        });
+
+        const newReplyList = parentComment.replies.filter((reply) => {
+          return reply._id.toString() != req.body.commentId.toString();
+        });
+        parentComment.replies = [...newReplyList];
+        parentComment.save();
+        parentCommentIndex = post.comments.findIndex((comment) => {
+          return comment._id.toString() == parentCommentId.toString();
+        });
+
+        post.comments[parentCommentIndex] = parentComment;
+        await post.save();
+      } else {
+        const newCommentList = post.comments.filter((comment) => {
+          return comment._id.toString() != req.body.commentId.toString();
+        });
+        post.comments = [...newCommentList];
+        await post.save();
+
+        await commentSchema.deleteMany({
+          parentCommentId: foundComment._id,
+        });
+      }
+
+      await commentSchema.findOneAndDelete({
+        _id: req.body.commentId,
+      });
+
+      res.json(post.toObject());
+    } catch (err) {
+      next(err);
+    }
+  };
 
   getBatch = async (req, res, next) => {
     try {

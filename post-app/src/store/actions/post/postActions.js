@@ -70,8 +70,8 @@ export function editPost(navigate, postId, data){
       dispatch({type: actionTypes.EDITING_POST});
 
       request(navigate, `${apiUrl}/post/${postId}`, 'PUT', data)
-      .then(editedPost=> {
-          dispatch({type: actionTypes.EDIT_POST_SUCCESS, editedPost});  
+      .then(post=> {
+          dispatch({type: actionTypes.EDIT_POST_SUCCESS, post});  
       })
       .catch(err => {
           dispatch({type: actionTypes.ERROR, error: err.message});  

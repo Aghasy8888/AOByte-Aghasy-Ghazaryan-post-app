@@ -1,6 +1,6 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
@@ -8,22 +8,24 @@ import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import Sort from "../Sort/Sort";
 import SingleComment from "../SingleComment/SingleComment";
 import Rate from "../Rate/Rate";
-import DeleteModal from "../DeleteModal/DeleteModal";
 import EditPost from "../EditPost/EditPost";
-import { order } from "../PostList/sortOptions";
+import DeletePostModal from "../DeleteModal/DeletePostModal";
+import { order } from "../Sort/sortOptions";
 import {
   capitalizeFirstLetter,
   isOnlySpaces,
   separateStr_1ByStr_2,
   sort as sortComments,
 } from "../../helpers/helpers";
-import idGenarator from "../../helpers/idGenarator";
+import { addComment } from "../../store/actions/comment/commentActions";
 
 import styles from "./SinglePostShowStyle.module.css";
 
-function SinglePostShow(props) {
-  const { post } = props;
+
+
+function SinglePostShow({post}) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();  
   const [privacy, setPrivacy] = useState({
     value: post.privacy,
     label: capitalizeFirstLetter(post.privacy),
@@ -39,18 +41,50 @@ function SinglePostShow(props) {
   );
   const search = useSelector((state) => state.postReducer.search);
 
-  const [comments, setComments] = useState(props.post.comments || []);
+  const [comments, setComments] = useState(post.comments || []);
   const [sort, setSort] = useState({ value: "" });
   const [comTextToBeAdded, setComTextToBeAdded] = useState("");
   const [showComments, setShowComments] = useState(false);
   const [postRatingByUser, setPostRatingByUser] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-
+  const isDisabled = post.comments.length === 0 || post.comments.length === 1;
   
   const contentContainsSearch = post.content
     .toLowerCase()
     .includes(search.toLowerCase());
+
+  
+
+  const handleSort = (option) => {
+    setSort(option);
+    setComments((prevComments) => {
+      const commentsCopy = [...prevComments];
+      sortComments(option.value, commentsCopy, order);
+
+      return commentsCopy;
+    });
+  };
+
+  const onAddComment = () => {
+    if (!comTextToBeAdded || isOnlySpaces(comTextToBeAdded)) {
+      return;
+    }
+    if (!isAuthenticated) {
+      navigate("login");
+    }
+    setShowComments(true);
+
+    const data = {
+      content: comTextToBeAdded,
+      authorName: user.name,
+      authorSurname: user.surname,
+      parentId: post._id,
+    };
+
+    dispatch(addComment(navigate, post._id, data));
+    setComTextToBeAdded("");
+  }
 
   const contentComponent =
     search && contentContainsSearch
@@ -77,67 +111,16 @@ function SinglePostShow(props) {
         )
       : post.content;
 
-  useEffect(() => {
-    const commentsArray = props.post.comments ? [...props.post.comments] : [];
-    setComments(commentsArray);
-  }, [props.post.comments]);
-
-  const handleSort = (option) => {
-    setSort(option);
-    setComments((prevComments) => {
-      const commentsCopy = [...prevComments];
-      sortComments(option.value, commentsCopy, order);
-
-      return commentsCopy;
-    });
-  };
-
-  const deleteComment = (postId) => {
-    setComments((prevComments) => {
-      const commentsCopy = [...prevComments];
-      const updatedComments = commentsCopy.filter(
-        (comment) => comment.id !== postId
-      );
-
-      return updatedComments;
-    });
-  };
-
-  const addComment = () => {
-    if (!comTextToBeAdded || isOnlySpaces(comTextToBeAdded)) {
-      return;
-    }
-
-    if (!isAuthenticated) {
-      navigate("login");
-    }
-
-    setShowComments(true);
-
-    const commentToBeAdded = {
-      content: comTextToBeAdded,
-      id: idGenarator(),
-      rating: (Math.random() * 9 + 1).toFixed(0),
-    };
-
-    setComments((prevComments) => {
-      const updatedComments = [...prevComments, commentToBeAdded];
-
-      return updatedComments;
-    });
-
-    setComTextToBeAdded("");
-  };
-
-  const commentComponents = comments.map((comment, index) => (
+  const commentComponents = post.comments.map((comment, index) => (
     <SingleComment
       comment={comment}
       key={index}
-      deleteComment={deleteComment}
+      post={post}
+      replyBool={false}
     />
   ));
 
-  const isDisabled = comments.length === 0 || comments.length === 1;
+  
 
   
 
@@ -154,7 +137,7 @@ function SinglePostShow(props) {
       )}
 
       {showDeleteModal && (
-        <DeleteModal post={post} setShowDeleteModal={setShowDeleteModal} />
+        <DeletePostModal post={post} setShowDeleteModal={setShowDeleteModal} />
       )}
 
       <div className={styles.singlePostShow}>
@@ -219,14 +202,14 @@ function SinglePostShow(props) {
               }}
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
-                  addComment();
+                  onAddComment();
                 }
               }}
             />
             <Button
               className={styles.comButton}
               variant={`${!comTextToBeAdded ? "secondary" : "primary"}`}
-              onClick={() => addComment()}
+              onClick={() => onAddComment()}
               disabled={!comTextToBeAdded}
             >
               Comment
