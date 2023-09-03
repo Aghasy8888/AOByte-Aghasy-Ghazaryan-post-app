@@ -51,7 +51,7 @@ function SingleComment({ comment, post, replyBool }) {
     dispatch(addComment(navigate, post._id, data));
     setReplyText("");
   };
-console.log('comment-comment.rating',comment, comment.rating);
+  
   return (
     <div className={replyBool ? styles.replyBigContainer : styles.container}>
       <div className={styles.userAndRateContainer}>
