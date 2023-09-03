@@ -45,6 +45,20 @@ const CommentSchema = new Schema({
     },
 });
 
+const RatingSchema = new Schema(
+  {
+    author: {
+      type: ObjectId,
+      ref: "User",
+      required: true,
+    },
+    rating: {
+      type: Number,
+      default: 0,
+    },
+  }
+);
+
 const PostSchema = new Schema(
   {
     author: {
@@ -76,6 +90,7 @@ const PostSchema = new Schema(
       type: Number,
       default: 0,
     },
+    ratingsArray: [RatingSchema],
     comments: [CommentSchema],
   },
   {

@@ -78,3 +78,18 @@ export function editPost(navigate, postId, data){
       });
   }
 }
+
+export function ratePost(navigate, postId, data){
+
+  return (dispatch)=>{
+      dispatch({type: actionTypes.RATING_POST});
+
+      request(navigate, `${apiUrl}/post/ratePost/${postId}`, 'PUT', data)
+      .then(post=> {
+          dispatch({type: actionTypes.RATE_POST_SUCCESS, post});  
+      })
+      .catch(err => {
+          dispatch({type: actionTypes.ERROR, error: err.message});  
+      });
+  }
+}

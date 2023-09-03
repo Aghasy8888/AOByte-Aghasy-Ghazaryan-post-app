@@ -33,3 +33,18 @@ export function addComment(navigate, postId, data){
         });
     }
   }
+
+  export function rateComment(navigate, postId, data){
+
+    return (dispatch)=>{
+        dispatch({type: actionTypes.RATING_COMMENT});
+  
+        request(navigate, `${apiUrl}/post/rateComment/${postId}`, 'PUT', data)
+        .then(post=> {
+            dispatch({type: actionTypes.RATE_COMMENT_SUCCESS, post});  
+        })
+        .catch(err => {
+            dispatch({type: actionTypes.ERROR, error: err.message});  
+        });
+    }
+  }

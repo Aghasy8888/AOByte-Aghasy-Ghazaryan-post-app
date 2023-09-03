@@ -1,13 +1,35 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import { ratePost } from "../../store/actions/post/postActions";
+import { rateComment } from "../../store/actions/comment/commentActions";
+
 import { Button, Form } from "react-bootstrap";
 import styles from "./RateStyle.module.css";
 
-function Rate({ ratingByUser, setRatingByUser, name }) {
+
+function Rate({ ratingByUser, setRatingByUser, name, post, comment }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const onRate = (rating) => {
     if (rating !== "" && rating >= 0 && rating <= 5) {
-    } else {
-      setRatingByUser("");
-    }
+      if (name === "comment") {
+        const data = {
+          rating: Number(ratingByUser),
+          commentId: comment._id,
+        };
+        dispatch(rateComment(navigate, post._id, data));
+      } else {
+        const data = {
+          rating: Number(ratingByUser),
+        };
+        dispatch(ratePost(navigate, post._id, data));
+      }
+      
+    } 
+    setRatingByUser("");    
   };
 
   const ratePressingEnter = (e) => {

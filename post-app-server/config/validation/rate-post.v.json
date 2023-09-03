@@ -1,0 +1,22 @@
+{
+    "title": "rate post",
+    "type": "object",
+    "properties": {
+      "body": {
+        "type": "object",
+        "properties": {
+          "rating": {
+            "type": "number",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "rating"
+        ]
+      }
+    },
+    "required": [
+      "body"
+    ]
+  }
+  

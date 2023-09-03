@@ -5,17 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 
-import Sort from "../Sort/Sort";
 import SingleComment from "../SingleComment/SingleComment";
 import Rate from "../Rate/Rate";
 import EditPost from "../EditPost/EditPost";
 import DeletePostModal from "../DeleteModal/DeletePostModal";
-import { order } from "../Sort/sortOptions";
 import {
   capitalizeFirstLetter,
   isOnlySpaces,
   separateStr_1ByStr_2,
-  sort as sortComments,
 } from "../../helpers/helpers";
 import { addComment } from "../../store/actions/comment/commentActions";
 
@@ -41,30 +38,15 @@ function SinglePostShow({post}) {
   );
   const search = useSelector((state) => state.postReducer.search);
 
-  const [comments, setComments] = useState(post.comments || []);
-  const [sort, setSort] = useState({ value: "" });
   const [comTextToBeAdded, setComTextToBeAdded] = useState("");
   const [showComments, setShowComments] = useState(false);
   const [postRatingByUser, setPostRatingByUser] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const isDisabled = post.comments.length === 0 || post.comments.length === 1;
   
   const contentContainsSearch = post.content
     .toLowerCase()
     .includes(search.toLowerCase());
-
-  
-
-  const handleSort = (option) => {
-    setSort(option);
-    setComments((prevComments) => {
-      const commentsCopy = [...prevComments];
-      sortComments(option.value, commentsCopy, order);
-
-      return commentsCopy;
-    });
-  };
 
   const onAddComment = () => {
     if (!comTextToBeAdded || isOnlySpaces(comTextToBeAdded)) {
@@ -146,7 +128,7 @@ function SinglePostShow({post}) {
             <span>
               {post.authorName} {post.authorSurname}
             </span>
-            <span> (Rating {post.rating})</span>
+            <span> (Rating {post.rating.toFixed(1)})</span>
           </div>
           <div>{capitalizeFirstLetter(post.privacy)}</div>
         </div>
@@ -156,6 +138,7 @@ function SinglePostShow({post}) {
         </p>
 
         <Rate
+          post={post}
           name="post"
           ratingByUser={postRatingByUser}
           setRatingByUser={setPostRatingByUser}
@@ -173,7 +156,6 @@ function SinglePostShow({post}) {
 
         {showComments && (
           <>
-            <div className={styles.buttonSortContainer}>
               <Button
                 className={styles.comButton}
                 variant="primary"
@@ -181,12 +163,6 @@ function SinglePostShow({post}) {
               >
                 Close comments
               </Button>
-              <Sort
-                isDisabled={isDisabled}
-                sort={sort}
-                handleSort={handleSort}
-              />
-            </div>
 
             {commentComponents}
           </>

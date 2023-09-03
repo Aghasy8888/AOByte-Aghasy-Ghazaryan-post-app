@@ -32,7 +32,7 @@ function Login() {
     if (!isValidEmail(email)) {
       setErrors({
         email: "Invalid email",
-      })
+      });
     }
 
     if (isValidEmail(email) && password) {
@@ -67,6 +67,11 @@ function Login() {
                   placeholder="Enter email"
                   value={values.email}
                   onChange={handleChange}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      handleSubmit();
+                    }
+                  }}
                 />
                 {<Form.Text className="text-danger">{errors.email}</Form.Text>}
               </Form.Group>
@@ -79,6 +84,11 @@ function Login() {
                   value={values.password}
                   onChange={handleChange}
                   name="password"
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      handleSubmit();
+                    }
+                  }}
                 />
                 {
                   <Form.Text className="text-danger">

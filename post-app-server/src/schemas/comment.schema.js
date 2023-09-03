@@ -3,6 +3,20 @@ const mongoosePaginate = require("mongoose-paginate");
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
+const RatingSchema = new Schema(
+  {
+    author: {
+      type: ObjectId,
+      ref: "User",
+      required: true,
+    },
+    rating: {
+      type: Number,
+      default: 0,
+    },
+  }
+);
+
 const CommentSchema = new Schema(
   {
     author: {
@@ -38,6 +52,7 @@ const CommentSchema = new Schema(
       type: ObjectId,
       required: true
     },
+    ratingsArray: [RatingSchema],
   },
   {
     timestamps: {

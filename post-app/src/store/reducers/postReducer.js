@@ -12,6 +12,8 @@ const defaultState = {
   editPostSuccess: false,
   addedCommentSuccess: false,
   removeCommentSuccess: false,
+  ratePostSuccess: false,
+  rateCommentSuccess: false,
   error: null,
 };
 
@@ -141,6 +143,30 @@ const postReducer = (state = defaultState, action) => {
     case actionTypes.REMOVE_COMMENT_SUCCESS: {
       const message = "Comment was removed successfully.";
       return makePostChanges(state, action, message, "removeCommentSuccess");
+    }
+
+    case actionTypes.RATING_POST: {
+      return {
+        ...loadingState,
+        ratePostSuccess: false,
+      };
+    }
+
+    case actionTypes.RATE_POST_SUCCESS: {
+      const message = "Post was rated successfully.";
+      return makePostChanges(state, action, message, "ratePostSuccess");
+    }
+
+    case actionTypes.RATING_COMMENT: {
+      return {
+        ...loadingState,
+        rateCommentSuccess: false,
+      };
+    }
+
+    case actionTypes.RATE_COMMENT_SUCCESS: {
+      const message = "Comment was rated successfully.";
+      return makePostChanges(state, action, message, "rateCommentSuccess");
     }
 
     default:

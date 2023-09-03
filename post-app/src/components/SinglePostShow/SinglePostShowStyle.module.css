@@ -38,10 +38,10 @@ h6, span {
   margin-top: auto;
 }
 
-.buttonSortContainer {
+/* .buttonSortContainer {
   display: flex;
   gap: 20px;
-}
+} */
 
 .titleAndRatingContainer {
   display: flex;

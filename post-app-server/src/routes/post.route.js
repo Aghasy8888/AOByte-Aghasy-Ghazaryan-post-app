@@ -21,10 +21,35 @@ postRouter.get("/", auth, validator("category"), postController.getBatch);
 postRouter.put("/:id", auth, validator("post-update"), postController.update);
 
 //add comment to the post
-postRouter.put("/addComment/:id", auth, validator("add-comment"), postController.addComment);
+postRouter.put(
+  "/addComment/:id",
+  auth,
+  validator("add-comment"),
+  postController.addComment
+);
 
+//remove comment
+postRouter.put(
+  "/removeComment/:id",
+  auth,
+  validator("remove-comment"),
+  postController.removeComment
+);
 
-//add comment to the post
-postRouter.put("/removeComment/:id", auth, validator("remove-comment"), postController.removeComment);
+//rate post
+postRouter.put(
+  "/ratePost/:id",
+  auth,
+  validator("rate-post"),
+  postController.ratePost
+);
+
+//rate comment
+postRouter.put(
+  "/rateComment/:id",
+  auth,
+  validator("rate-comment"),
+  postController.rateComment
+);
 
 module.exports = postRouter;

@@ -28,8 +28,8 @@ function SingleComment({ comment, post, replyBool }) {
   const [replyText, setReplyText] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const replyComponents = comment.replies.map((reply, index) => (
-    <SingleReply key={index} replyBool={true} reply={reply} post={post} />
+  const replyComponents = comment.replies.map((reply) => (
+    <SingleReply key={reply._id}  replyBool={true} reply={reply} post={post} />
   ));
 
   const onReply = () => {
@@ -51,14 +51,14 @@ function SingleComment({ comment, post, replyBool }) {
     dispatch(addComment(navigate, post._id, data));
     setReplyText("");
   };
-
+console.log('comment-comment.rating',comment, comment.rating);
   return (
     <div className={replyBool ? styles.replyBigContainer : styles.container}>
       <div className={styles.userAndRateContainer}>
         <div className={styles.username}>
           {comment.authorName} {comment.authorSurname}
         </div>
-        <div className={styles.rating}>Rating {comment.rating}</div>
+        <div className={styles.rating}>Rating {comment.rating.toFixed(1)}</div>
       </div>
 
       <div className={styles.comment}>
@@ -68,6 +68,8 @@ function SingleComment({ comment, post, replyBool }) {
             name="comment"
             ratingByUser={comRatingByUser}
             setRatingByUser={setComRatingByUser}
+            comment={comment}
+            post={post}
           />
           <Button
             variant="danger"

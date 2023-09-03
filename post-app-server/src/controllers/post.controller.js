@@ -1,7 +1,10 @@
 const errorConfig = require("../../config/error.config");
 const ObjectId = require("mongoose").Types.ObjectId;
 const postSchema = require("../schemas/post.schema");
+const ratingSchema = require("../schemas/rating.schema");
 const commentSchema = require("../schemas/comment.schema");
+const findAverage = require("../helpers/helpers");
+const rateComment = require("../helpers/rateComment");
 const {
   TODAY,
   THIS_WEEK,
@@ -35,6 +38,14 @@ class PostController {
       });
 
       if (!post) throw errorConfig.postNotFound;
+
+      await ratingSchema.deleteMany({
+        parent: req.params.id,
+      });
+      await commentSchema.deleteMany({
+        parentId: req.params.id,
+      });
+
       res.json({ success: true });
     } catch (err) {
       next(err);
@@ -53,6 +64,67 @@ class PostController {
       content && (post.content = content);
       privacy && (post.privacy = privacy);
       category && (post.category = category);
+
+      await post.save();
+      res.json(post.toObject());
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  rateComment = async (req, res, next) => {
+    try {
+      const { commentId } = req.body;
+      const post = await postSchema.findOne({
+        _id: req.params.id,
+      });
+      if (!post) throw errorConfig.postNotFound;
+
+      const comment = await commentSchema.findOne({
+        _id: commentId,
+      });
+      if (!comment) throw errorConfig.commentNotFound;
+      const isReply = comment.parentCommentId;
+
+      await rateComment(post, comment, isReply, res, req);
+
+      await comment.save();
+      await post.save();
+      res.json(post.toObject());
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  ratePost = async (req, res, next) => {
+    try {
+      const post = await postSchema.findOne({
+        _id: req.params.id,
+      });
+      if (!post) throw errorConfig.postNotFound;
+      const rating = await ratingSchema.findOne({
+        author: res.locals.userId,
+      });
+
+      if (rating) {
+        await ratingSchema.findOneAndDelete({
+          author: res.locals.userId,
+        });
+        const newRatingsArray = post.ratingsArray.filter((ratingObj) => {
+          return ratingObj.author.toString() != rating.author.toString();
+        });
+        post.ratingsArray = [...newRatingsArray];
+      }
+      const ratingData = {
+        author: ObjectId(res.locals.userId),
+        parent: req.params.id,
+        ...req.body,
+      };
+
+      const ratingObject = await ratingSchema.create(ratingData);
+      post.ratingsArray = [...post.ratingsArray, ratingObject];
+
+      post.rating = findAverage(post.ratingsArray);
 
       await post.save();
       res.json(post.toObject());
@@ -83,7 +155,7 @@ class PostController {
         });
 
         parentComment.replies = [...parentComment.replies, comment];
-        parentComment.save();
+        await parentComment.save();
         parentCommentIndex = post.comments.findIndex((comment) => {
           return comment._id.toString() == parentCommentId.toString();
         });
@@ -113,9 +185,7 @@ class PostController {
       if (!foundComment) throw errorConfig.commentNotFound;
 
       const { parentCommentId } = req.body;
-      console.log('parentCommentId', parentCommentId);
       if (parentCommentId) {
-        console.log('here i am');
         const parentComment = await commentSchema.findOne({
           _id: parentCommentId,
         });
@@ -124,7 +194,7 @@ class PostController {
           return reply._id.toString() != req.body.commentId.toString();
         });
         parentComment.replies = [...newReplyList];
-        parentComment.save();
+        await parentComment.save();
         parentCommentIndex = post.comments.findIndex((comment) => {
           return comment._id.toString() == parentCommentId.toString();
         });
