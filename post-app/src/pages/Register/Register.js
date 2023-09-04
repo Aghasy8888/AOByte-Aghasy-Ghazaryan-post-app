@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { register } from "../../store/actions/user/userActions";
 import { isValidEmail } from "../../helpers/helpers";
@@ -11,6 +11,9 @@ import styles from "./RegisterStyle.module.css";
 function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector(
+    (state) => state.authReducer.isAuthenticated
+  );
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -25,6 +28,16 @@ function Register() {
     confirmPassword: null,
     name: null,
     surname: null,
+  });
+
+  const { lastPart } = useParams();
+  console.log("lastPart", lastPart);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+      return;
+    }
   });
 
   const handleSubmit = () => {

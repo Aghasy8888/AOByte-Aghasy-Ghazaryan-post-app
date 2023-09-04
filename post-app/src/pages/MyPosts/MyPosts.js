@@ -12,10 +12,19 @@ export default function MyPosts() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const searchData = useSelector((state) => state.postReducer.searchData);
+  const isAuthenticated = useSelector(
+    (state) => state.authReducer.isAuthenticated
+  );
 
-  useEffect(() => {
+    useEffect(() => {
+      if (!isAuthenticated) {
+        navigate("/login");
+        return;
+      }
     dispatch(getPosts(navigate, searchData, true));
   }, []);
+
+  
 
   return (
     <div className={styles.myPosts}>
