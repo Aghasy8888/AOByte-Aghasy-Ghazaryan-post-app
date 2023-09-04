@@ -1,10 +1,26 @@
 const ObjectId = require("mongoose").Types.ObjectId;
-const ratingSchema = require("../schemas/rating.schema");
-const findAverage = require("../helpers/helpers");
+const errorConfig = require("../../config/error.config");
+const { ratingSchema, replySchema, commentSchema } = require('../schemas/comment.schema');
+const findAverage = require("./helpers");
 
-module.exports = async function rateComment(post, comment, isReply, res, req) {
+module.exports = async function rateCom(post, res, req) {
   let commentIndex;
-  const { commentId } = req.body;
+  let comment;
+  const { commentId, parentCommentId } = req.body;
+
+  comment = await commentSchema.findOne({
+    _id: commentId,
+  });
+  const isReply = parentCommentId;
+
+  if (isReply) {
+    comment = await replySchema.findOne({
+      _id: commentId,
+    });
+  }
+
+  if (!comment) throw errorConfig.commentNotFound;
+
   const rating = await ratingSchema.findOne({
     author: res.locals.userId,
   });
@@ -48,4 +64,5 @@ module.exports = async function rateComment(post, comment, isReply, res, req) {
     });
     post.comments[commentIndex] = comment;
   }
+  await comment.save();
 };

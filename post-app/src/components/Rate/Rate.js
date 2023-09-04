@@ -8,7 +8,6 @@ import { rateComment } from "../../store/actions/comment/commentActions";
 import { Button, Form } from "react-bootstrap";
 import styles from "./RateStyle.module.css";
 
-
 function Rate({ ratingByUser, setRatingByUser, name, post, comment }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,6 +18,9 @@ function Rate({ ratingByUser, setRatingByUser, name, post, comment }) {
         const data = {
           rating: Number(ratingByUser),
           commentId: comment._id,
+          parentCommentId: comment.parentCommentId
+            ? comment.parentCommentId
+            : "",
         };
         dispatch(rateComment(navigate, post._id, data));
       } else {
@@ -27,9 +29,8 @@ function Rate({ ratingByUser, setRatingByUser, name, post, comment }) {
         };
         dispatch(ratePost(navigate, post._id, data));
       }
-      
-    } 
-    setRatingByUser("");    
+    }
+    setRatingByUser("");
   };
 
   const ratePressingEnter = (e) => {

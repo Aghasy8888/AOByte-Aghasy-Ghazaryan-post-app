@@ -10,6 +10,10 @@ const RatingSchema = new Schema(
       ref: "User",
       required: true,
     },
+    parent: {
+      type: ObjectId,
+      required: true,
+    },
     rating: {
       type: Number,
       default: 0,
@@ -17,7 +21,7 @@ const RatingSchema = new Schema(
   }
 );
 
-const CommentSchema = new Schema(
+const ReplySchema = new Schema(
   {
     author: {
       type: ObjectId,
@@ -62,6 +66,52 @@ const CommentSchema = new Schema(
   }
 );
 
+const CommentSchema = new Schema(
+  {
+    author: {
+      type: ObjectId,
+      ref: "User",
+      required: true,
+    },
+    authorName: {
+      type: String,
+      required: true,
+    },
+    authorSurname: {
+      type: String,
+      required: true,
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+    rating: {
+      type: Number,
+      default: 0,
+    },
+    replies: [ReplySchema],
+    parentCommentId: {
+      type: ObjectId,
+      default: null
+    },
+    parentId: {
+      type: ObjectId,
+      required: true
+    },
+    ratingsArray: [RatingSchema],
+  },
+  {
+    timestamps: {
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    },
+  }
+);
+
 CommentSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model("Comment", CommentSchema);
+module.exports = {
+  commentSchema: mongoose.model("Comment", CommentSchema),
+  replySchema: mongoose.model("Reply", ReplySchema),
+  ratingSchema: mongoose.model("Rating", RatingSchema),
+};

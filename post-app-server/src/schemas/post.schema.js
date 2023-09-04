@@ -52,6 +52,10 @@ const RatingSchema = new Schema(
       ref: "User",
       required: true,
     },
+    parent: {
+      type: ObjectId,
+      required: true,
+    },
     rating: {
       type: Number,
       default: 0,
