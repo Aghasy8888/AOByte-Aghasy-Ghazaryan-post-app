@@ -48,3 +48,18 @@ export function addComment(navigate, postId, data){
         });
     }
   }
+
+  export function editComment(navigate, postId, data){
+
+    return (dispatch)=>{
+        dispatch({type: actionTypes.EDITING_COMMENT});
+  
+        request(navigate, `${apiUrl}/post/editComment/${postId}`, 'PUT', data)
+        .then(post=> {
+            dispatch({type: actionTypes.EDIT_COMMENT_SUCCESS, post});  
+        })
+        .catch(err => {
+            dispatch({type: actionTypes.ERROR, error: err.message});  
+        });
+    }
+  }

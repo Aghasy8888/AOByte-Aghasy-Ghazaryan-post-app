@@ -169,6 +169,18 @@ const postReducer = (state = defaultState, action) => {
       return makePostChanges(state, action, message, "rateCommentSuccess");
     }
 
+    case actionTypes.EDITING_COMMENT: {
+      return {
+        ...loadingState,
+        editCommentSuccess: false,
+      };
+    }
+
+    case actionTypes.EDIT_COMMENT_SUCCESS: {
+      const message = "Comment was edited successfully.";
+      return makePostChanges(state, action, message, "editCommentSuccess");
+    }
+
     default:
       return state;
   }

@@ -52,4 +52,12 @@ postRouter.put(
   postController.rateComment
 );
 
+//edit comment
+postRouter.put(
+  "/editComment/:id",
+  auth,
+  validator("edit-comment"),
+  postController.editComment
+);
+
 module.exports = postRouter;

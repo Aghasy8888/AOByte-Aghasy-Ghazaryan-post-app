@@ -10,6 +10,7 @@ const rateCom = require("../helpers/rateCom");
 const ratePostsFunc = require("../helpers/ratePostsFunc");
 const addCommentFunc = require("../helpers/addCommentFunc");
 const removeCommentFunc = require("../helpers/removeCommentFunc");
+const editCommentFunc = require("../helpers/editCommentFunc");
 const {
   TODAY,
   THIS_WEEK,
@@ -19,6 +20,7 @@ const {
   rating_highest_first,
   rating_lowest_first,
 } = require("./costants");
+
 
 
 
@@ -141,6 +143,22 @@ class PostController {
 
       await removeCommentFunc(post, req);
 
+      res.json(post.toObject());
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  editComment = async (req, res, next) => {
+    try {
+      const post = await postSchema.findOne({
+        _id: req.params.id,
+      });
+      if (!post) throw errorConfig.postNotFound;
+
+      await editCommentFunc(post, res, req);
+      
+      await post.save();
       res.json(post.toObject());
     } catch (err) {
       next(err);

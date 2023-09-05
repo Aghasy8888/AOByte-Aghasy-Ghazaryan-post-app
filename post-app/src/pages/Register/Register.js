@@ -30,9 +30,6 @@ function Register() {
     surname: null,
   });
 
-  const { lastPart } = useParams();
-  console.log("lastPart", lastPart);
-
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/");
@@ -51,9 +48,9 @@ function Register() {
     } else if (password !== confirmPassword) {
       passwordMessage = "Passwords didn't match";
       valid = false;
-    } else if(!email || !name || !surname ) {
+    } else if (!email || !name || !surname) {
       valid = false;
-    } else if(!isValidEmail(email)) {
+    } else if (!isValidEmail(email)) {
       valid = false;
     }
 
@@ -68,7 +65,7 @@ function Register() {
     if (!isValidEmail(email)) {
       setErrors({
         email: "Invalid email",
-      })
+      });
     }
 
     if (valid) {

@@ -5,10 +5,9 @@
       "body": {
         "type": "object",
         "properties": {
-          "rating": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 5
+          "content": {
+            "type": "string",
+            "minLength": 1
           },
           "commentId": {
             "type": "string",
@@ -21,7 +20,7 @@
           }
         },
         "required": [
-          "rating",
+          "content",
           "commentId",
           "parentCommentId"
         ]

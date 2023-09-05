@@ -2,9 +2,9 @@ const ObjectId = require("mongoose").Types.ObjectId;
 const errorConfig = require("../../config/error.config");
 const { ratingSchema, replySchema, commentSchema } = require('../schemas/comment.schema');
 const findAverage = require("./helpers");
+const sendChangesToPost = require("./sendChangesToPost");
 
 module.exports = async function rateCom(post, res, req) {
-  let commentIndex;
   let comment;
   const { commentId, parentCommentId } = req.body;
 
@@ -45,24 +45,6 @@ module.exports = async function rateCom(post, res, req) {
 
   comment.ratingsArray = [...comment.ratingsArray, ratingObject];
   comment.rating = findAverage(comment.ratingsArray);
-
-  if (isReply) {
-    commentIndex = post.comments.findIndex((parentComment) => {
-      return parentComment._id.toString() == comment.parentCommentId.toString();
-    });
-    const replyIndex = post.comments[commentIndex].replies.findIndex(
-      (reply) => {
-        return (
-            reply._id.toString() == commentId.toString()
-        );
-      }
-    );
-    post.comments[commentIndex].replies[replyIndex] = comment;
-  } else {
-    commentIndex = post.comments.findIndex((comment) => {
-      return comment._id.toString() == commentId.toString();
-    });
-    post.comments[commentIndex] = comment;
-  }
+  sendChangesToPost( post, comment, commentId, parentCommentId );
   await comment.save();
 };
