@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import Rate from "../Rate/Rate";
 import SingleReply from "./SingleReply";
 import DeleteCommentModal from "../DeleteModal/DeleteCommentModal";
@@ -27,6 +29,7 @@ function SingleComment({ comment, post, replyBool }) {
   const [showReplies, setShowReplies] = useState(false);
   const [replyText, setReplyText] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const replyComponents = comment.replies.map((reply) => (
     <SingleReply key={reply._id}  replyBool={true} reply={reply} post={post} />
@@ -71,17 +74,31 @@ function SingleComment({ comment, post, replyBool }) {
             comment={comment}
             post={post}
           />
-          <Button
-            variant="danger"
-            onClick={() => setShowDeleteModal(true)}
-          >
-            Delete
-          </Button>
+
+          
+            {user._id === comment.author && (
+              <>
+                <Button
+                  className={styles.deleteButton}
+                  variant="info"
+                  onClick={() => setShowEditModal(true)}
+                >
+                  <FontAwesomeIcon icon={faEdit} />
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={() => setShowDeleteModal(true)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </Button>
+              </>
+            )}
           {!replyBool && (
             <Button variant="primary" onClick={() => setShowReplyInput(true)}>
               Reply
             </Button>
           )}
+
         </div>
       </div>
 
