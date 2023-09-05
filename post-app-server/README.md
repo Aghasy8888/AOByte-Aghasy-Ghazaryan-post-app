@@ -183,3 +183,52 @@ content: `{String}`,
 privacy: `{String}`,
 category: `{String}`
 `}`  
+
+#### Rate a post
+request url `API_HOST/post/ratePost/:postId`
+request method `PUT`
+request body 
+`{`
+rating: `{Number}`, (required)
+`}` 
+
+#### Rate a comment
+request url `API_HOST/post/rateComment/:postId`
+request method `PUT`
+request body 
+`{`
+rating: `{Number}`, (required)
+commentId: `{String}`, (required)
+parentCommentId: `{String}`, (required)
+`}`  
+
+#### Add a comment
+request url `API_HOST/post/addComment/:postId`
+request method `PUT`
+request body 
+`{`
+content: `{String}`, (required)
+parentCommentId: `{String}`,
+parentId: `{String}`,
+authorName: `{String}`, (required)
+authorSurname: `{String}`, (required)
+`}`  
+
+#### Remove a comment
+request url `API_HOST/post/removeComment/:postId`
+request method `PUT`
+request body 
+`{`
+commentId: `{String}`, (required)
+parentCommentId: `{String}`
+`}`  
+
+#### Edit a comment
+request url `API_HOST/post/editComment/:postId`
+request method `PUT`
+request body 
+`{`
+content: `{String}`, (required)
+commentId: `{String}`, (required)
+parentCommentId: `{String}`, (required)
+`}`
