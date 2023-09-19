@@ -3,13 +3,12 @@ import { Button, Form, Modal } from "react-bootstrap";
 import styles from "./SingleCommentStyle.module.css";
 
 function CommentInput({
-    content,
+  content,
   setContent,
   onAction,
   setShowInput,
-  placeholder
-}) {    
-
+  placeholder,
+}) {
   return (
     <div className={styles.replyContainer}>
       <Modal.Dialog>

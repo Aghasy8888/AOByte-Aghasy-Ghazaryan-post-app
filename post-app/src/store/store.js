@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import postReducer from './reducers/postReducer';
 import authReducer from './reducers/authReducer';
+import otherReducer from './reducers/otherReducer';
 
 const middlewaresArr = [thunk];
 if(process.env.NODE_ENV === "development"){
@@ -15,6 +16,7 @@ const middlewares = applyMiddleware(...middlewaresArr);
 const mainReducer = combineReducers({
     postReducer,
     authReducer,
+    otherReducer,
 });
 
 export const store = createStore(mainReducer, middlewares);

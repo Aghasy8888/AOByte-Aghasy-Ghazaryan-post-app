@@ -1,11 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { privacyOptions } from "../CreatePost/privacyOptions";
 import { categoryOptions } from "../CreatePost/categoryOptions";
 
 import { Button, Dropdown, DropdownButton, Form, Modal } from "react-bootstrap";
 import styles from "./CreateEditPostModalStyle.module.css";
+import { SET_SOMETHING_CHANGED } from "../../store/actions/other/otherActionTypes";
 
 function CreateEditPostModal(props) {
   const {
@@ -18,8 +19,20 @@ function CreateEditPostModal(props) {
     modalnfo,
     contentValue,
   } = props;
+  const dispatch = useDispatch();
   const { submitBtn, title } = modalnfo;
   const user = useSelector((state) => state.authReducer.userInfo);
+  const somethingChanged = useSelector(
+    (state) => state.otherReducer.somethingChanged
+  );
+
+  const handleClose = function () {
+      setShowModal(false);
+
+    if (somethingChanged) {
+      dispatch({ type: SET_SOMETHING_CHANGED, value: false });
+    }
+  };
 
   return (
     <div className={styles.modalContainer}>
@@ -33,7 +46,7 @@ function CreateEditPostModal(props) {
                 <Modal.Title>{title}</Modal.Title>
               </Modal.Header>
 
-              <Button variant="secondary" onClick={() => setShowModal(false)}>
+              <Button variant="secondary" onClick={handleClose}>
                 X
               </Button>
             </div>

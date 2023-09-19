@@ -4,16 +4,15 @@ import Search from '../Search/Search';
 import CreatePost from '../CreatePost/CreatePost';
 import { getPosts } from '../../store/actions/post/postActions';
 
-import { useDispatch} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 
  function PostApp() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   useEffect(() => {
-    dispatch(getPosts(navigate));
+      dispatch(getPosts(navigate));
   }, []);
 
   return (
