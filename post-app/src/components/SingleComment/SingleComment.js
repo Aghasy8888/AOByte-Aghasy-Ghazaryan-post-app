@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom";
 import CommentInput from "./CommentInput";
 import SingleReply from "./SingleReply";
 import ContentAndButtons from "./ContentAndButtons";
-import DeleteCommentModal from "../DeleteModal/DeleteCommentModal";
-import { addComment, editComment } from "../../store/actions/comment/commentActions";
+import { DeleteCommentModal } from "../../components";
+import {
+  addComment,
+  editComment,
+} from "../../store/actions/comment/commentActions";
 import { isOnlySpaces } from "../../helpers/helpers";
 
 import { Button } from "react-bootstrap";

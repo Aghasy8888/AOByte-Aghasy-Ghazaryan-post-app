@@ -1,7 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
-import Rate from "../Rate/Rate";
+import {Rate} from "../../components";
 
 import { Button } from "react-bootstrap";
 import styles from "./SingleCommentStyle.module.css";

@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { getPosts } from "../../store/actions/post/postActions";
-import Search from "../../components/Search/Search";
-import PostShow from "../../components/PostShow/PostShow";
+import {Search} from "../../components";
+import { PostShow } from "../../components";
 
 import styles from "./MyPostsStyle.module.css";
 

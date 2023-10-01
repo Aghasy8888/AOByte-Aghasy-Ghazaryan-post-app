@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import CreateEditPostModal from "../CreateEditPostModal/CreateEditPostModal";
+import {CreateEditPostModal} from "../../components";
 import { optionValues as privacyValues } from "../CreatePost/privacyOptions";
 import { optionValues as categoryValues } from "../CreatePost/categoryOptions";
 import { editPost } from "../../store/actions/post/postActions";

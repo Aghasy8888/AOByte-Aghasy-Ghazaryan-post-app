@@ -1,8 +1,9 @@
 import React, { memo, useState } from "react";
-import SinglePostShow from "../SinglePostShow/SinglePostShow";
-import Pagination from "../Pagination/Pagination";
-import styles from "./PostShowStyle.module.css";
 import { useSelector } from "react-redux";
+import {SinglePostShow} from "../../components";
+import {Pagination} from "../../components";
+import styles from "./PostShowStyle.module.css";
+
 
 function PostShow() {
   const posts = useSelector((state) => state.postReducer.posts);

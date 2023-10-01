@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import PostShow from '../PostShow/PostShow';
-import Search from '../Search/Search';
-import CreatePost from '../CreatePost/CreatePost';
+import {PostShow} from "../../components";
+import {Search} from '../../components';
+import {CreatePost} from '../../components';
 import { getPosts } from '../../store/actions/post/postActions';
 
-import { useDispatch, useSelector} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 

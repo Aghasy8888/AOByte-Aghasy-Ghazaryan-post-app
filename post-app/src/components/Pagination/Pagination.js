@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import PaginationItem from "../PaginationItem/PaginationItem";
+import {PaginationItem} from "../../components";
 import { arrayInRange, getPagesCut } from "../../helpers/helpers";
 import styles from './PaginationStyle.module.css'
 

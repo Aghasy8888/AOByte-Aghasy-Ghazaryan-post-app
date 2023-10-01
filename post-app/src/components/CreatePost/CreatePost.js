@@ -5,10 +5,10 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { optionValues as privacyValues } from "./privacyOptions";
 import { optionValues as categoryValues } from "./categoryOptions";
 import { addPost, getPosts } from "../../store/actions/post/postActions";
-
+import {CreateEditPostModal} from "../../components";
 import { Button } from "react-bootstrap";
 import styles from "./CreatePostStyle.module.css";
-import CreateEditPostModal from "../CreateEditPostModal/CreateEditPostModal";
+
 
 function CreatePost() {
   const navigate = useNavigate();

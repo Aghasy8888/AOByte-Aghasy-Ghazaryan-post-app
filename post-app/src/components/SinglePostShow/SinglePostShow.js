@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 
-import SingleComment from "../SingleComment/SingleComment";
-import Rate from "../Rate/Rate";
-import EditPost from "../EditPost/EditPost";
-import DeletePostModal from "../DeleteModal/DeletePostModal";
+import {SingleComment} from "../../components";
+import {Rate} from "../../components";
+import {EditPost} from "../../components";
+import {DeletePostModal} from "../../components";
 import {
   capitalizeFirstLetter,
   isOnlySpaces,
