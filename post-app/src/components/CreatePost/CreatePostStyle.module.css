@@ -1,11 +1,18 @@
 .createPost {
   display: flex;
   column-gap: 10px;
-  margin: 40px 25px 0;
   padding: 10px 15px;
   background-color: rgb(73, 71, 71);
   color: aliceblue;
   border-radius: 10px;
+  margin-top: 40px;
+  max-width: 710px;
+}
+
+.createPostCtn {
+  max-width: 700px;
+  margin: auto;
+  margin-bottom: 40px;
 }
 
 .btnWhatsOnYourMind {
@@ -39,4 +46,15 @@
 
 p {
   color: rgb(228, 230, 235);
+}
+
+@media (max-width: 720px) {
+  .createPost {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    max-width: 660px;
+    margin: auto;
+    margin: 20px;
+  }
 }

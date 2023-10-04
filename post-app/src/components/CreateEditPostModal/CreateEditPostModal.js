@@ -51,7 +51,7 @@ function CreateEditPostModal(props) {
               </Button>
             </div>
             <hr />
-            <div className={styles.userAndDropDowns}>
+            
               <div className={styles.userAndDropDown}>
                 <div className={styles.username}>
                   {user && `${user.name} ${user.surname}`}
@@ -74,8 +74,7 @@ function CreateEditPostModal(props) {
                     </Dropdown.Item>
                   ))}
                 </DropdownButton>
-              </div>
-              <div>
+
                 <DropdownButton
                   className={styles.dropdownButton}
                   variant="primary"
@@ -94,7 +93,6 @@ function CreateEditPostModal(props) {
                   ))}
                 </DropdownButton>
               </div>
-            </div>
 
             <Modal.Body>
               <Form.Control

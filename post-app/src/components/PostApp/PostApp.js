@@ -7,6 +7,8 @@ import { getPosts } from '../../store/actions/post/postActions';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import styles from "./PostAppStyle.module.css";
+
 
  function PostApp() {
   const dispatch = useDispatch();
@@ -16,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
   }, []);
 
   return (
-    <div>  
+    <div className={styles.postAppCtn}>  
       <Search />   
       <CreatePost /> 
       <PostShow />

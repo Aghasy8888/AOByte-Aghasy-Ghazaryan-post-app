@@ -1,35 +1,132 @@
 .navbar {
-  padding: 4px;
+  padding: 0 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: fixed;
-  top: 0;  
-  width: 100vw;
-  height: 38px;
-  z-index: 5555;
-  background-color: rgb(199, 228, 218);;
+  top: 24px;
+  width: 1024px;
+  height: 80px;
+  border-radius: 0px 0px 10px 10px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  z-index: 300;
 }
 
-.link {
-  color: black;
-  font-weight: bold;
+.link,
+.userInfo {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  text-decoration: none;
 }
 
 .active {
-  color: blue;
+  color: rgb(248, 105, 9);
 }
 
 .userInfo {
-  font-weight: bold;
-  color: rgb(40, 97, 43);
+  color: rgb(209, 240, 210);
 }
 
 .linksContainer {
-  margin-left: 20px;
   display: flex;
-  gap: 20px;
+  gap: 50px;
+  position: absolute;
+  right: 170px;
 }
 
 .ButtonGroup {
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 20px;
+  right: 20px;
+}
+
+.menuIcon {
+  display: none;
+}
+.mobileMenuCtn {
+  display: none;
+}
+
+.logo {
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+.appSpan {
+  color: rgb(248, 105, 9);;
+}
+
+@media (max-width: 1040px) {
+  .navbar {
+    max-width: 720px;
+  }
+}
+
+@media (max-width: 720px) {
+  .navbar {
+    width: unset;
+    right: 32px;
+    left: 32px;
+    top: 16px;
+  }
+  .navbar .menuIcon {
+    display: block;
+  }
+  .menuIcon img {
+    position: absolute;
+    top: 30px;
+    right: 20px;
+  }
+
+  .navbar .linksContainer,
+  .navbar .ButtonGroup {
+    display: none;
+  }
+  .mobileMenuCtn {
+    display: flex;
+    position: fixed;
+    z-index: 600;
+    background-color: rgb(51, 47, 47);
+    left: 0;
+    right: 0;
+    padding: 60px 32px;
+    transform: translateY(-100%);
+    transition: all 1200ms cubic-bezier(0.1, 0.96, 0.59, 0.95);
+  }
+  .xIcon {
+    position: fixed;
+    top: 48px;
+    right: 68px;
+  }
+  .mobileMenuCtn .linksContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mobileMenuCtn .ButtonGroup {
+    position: static;
+    background-color: rgb(51, 47, 47);
+  }
+
+  .linksAndBtnGroupCtn {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  .linksContainer {
+    position: static;
+  }
+  .link {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+  }
+  .activeMenu {
+    transform: translateY(0);
+  }
 }

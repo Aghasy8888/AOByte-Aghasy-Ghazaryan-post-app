@@ -5,10 +5,9 @@
 
 .inputGroup {
   display: flex;
-  margin: 30px 20px 0 20px;
   height: fit-content;
-  width: 50%;
   min-width: 200px;
+  margin: auto;
 }
 
 .search {
@@ -17,7 +16,10 @@
 }
 
 .searchContainer {
-  margin-top: 45px;
+  max-width: 710px;
+  margin: 65px auto;
+  width: 90%;
+  margin-bottom: 0;
 }
 
 .filterModal {
@@ -56,12 +58,18 @@
   justify-self: center;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 603px) {
   .inputGroup {
     width: 85%;
   }
 
   .filterModal {
     width: 93%;
+  }
+
+  .dropDowns {
+    /* flex-direction: column;
+    align-items: start; */
+    flex-wrap: wrap;
   }
 }

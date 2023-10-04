@@ -2,13 +2,15 @@ import React, { memo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { InputGroup, Form, Button, Modal, DropdownButton, Dropdown } from "react-bootstrap";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { getPosts } from "../../store/actions/post/postActions";
 import { categoryOptions, dateOptions } from "./filterOptions";
 import { sortOptions } from "./sortOptions";
 import { SET_SEARCH, SET_SEARCH_DATA } from "../../store/actions/post/postActionTypes";
 
 import styles from "./SearchStyle.module.css";
+import useInnerWidth from "../../hooks/useInnerWidth";
 
 function Search({onlyOwnerPosts}) {
   const dispatch = useDispatch();
@@ -28,6 +30,8 @@ function Search({onlyOwnerPosts}) {
     value: ''
 });
 
+const windowWidth = useInnerWidth();
+
   const handleSubmit = () => {
     setShowModal(false);
     
@@ -42,6 +46,7 @@ function Search({onlyOwnerPosts}) {
     dispatch({type: SET_SEARCH, search});
     dispatch({type: SET_SEARCH_DATA, searchData});
   };
+  
 
   return (
     <div className={styles.searchContainer}>
@@ -62,7 +67,7 @@ function Search({onlyOwnerPosts}) {
           variant="outline-primary"
           onClick={handleSubmit}
         >
-          Search
+         {windowWidth < 720 ? <FontAwesomeIcon icon={faSearch} /> : "Search" }
         </Button>
 
         <Button
@@ -70,7 +75,8 @@ function Search({onlyOwnerPosts}) {
           variant="outline-primary"
           onClick={() => setShowModal(true)}
         >
-          Filters
+          {windowWidth < 720 ? <FontAwesomeIcon icon={faFilter} /> : "Filters" }
+          
         </Button>
       </InputGroup>
 

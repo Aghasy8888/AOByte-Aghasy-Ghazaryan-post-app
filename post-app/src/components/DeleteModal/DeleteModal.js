@@ -1,6 +1,7 @@
 import React from 'react'
-import styles from "./DeleteModalStyle.module.css";
 import { Button, Modal } from 'react-bootstrap';
+import styles from "./DeleteModalStyle.module.css";
+
 
  function DeleteModal({setShowDeleteModal, onDelete, thingToDelete}) {
   return (
@@ -21,9 +22,8 @@ import { Button, Modal } from 'react-bootstrap';
             <p>You can not recover this {thingToDelete} once you delete it.</p>
           </Modal.Body>
 
-          <Modal.Footer>
+          <Modal.Footer className={styles.modalFooter}>
             <Button
-              className={styles.cancelBtn}
               variant="secondary"
               onClick={() => setShowDeleteModal(false)}
             >

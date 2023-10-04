@@ -17,3 +17,14 @@
   .comment {
     min-width: 202px;
   }
+
+  @media (max-width: 570px) {
+    .rateContainer {
+      height: 30px;
+    }
+    
+    .rateContainer :last-child {
+      display: flex;
+      align-items: center;
+    }
+  }

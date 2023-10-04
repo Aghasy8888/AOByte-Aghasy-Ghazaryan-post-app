@@ -74,7 +74,7 @@ function CreatePost() {
   };
 
   return (
-    <>
+    <div className={styles.createPostCtn}>
       {!showModal && (
         <div className={styles.createPost}>
           <div className={isAuthenticated ? styles.username : styles.sighIn}>
@@ -109,7 +109,7 @@ function CreatePost() {
           disabled={!content.trim()}
         />
       )}
-    </>
+    </div>
   );
 }
 

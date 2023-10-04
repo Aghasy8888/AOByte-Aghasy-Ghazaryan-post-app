@@ -17,5 +17,5 @@ export default function MyAccount() {
     }
   });
 
-  return <div className={styles.myAccount}>MyAccount</div>;
+  return <div className={styles.myAccount}></div>;
 }

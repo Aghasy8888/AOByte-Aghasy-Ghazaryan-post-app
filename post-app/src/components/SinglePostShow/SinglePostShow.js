@@ -3,26 +3,26 @@ import { Button, Form, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faEdit, faPlay } from "@fortawesome/free-solid-svg-icons";
 
-import {SingleComment} from "../../components";
-import {Rate} from "../../components";
-import {EditPost} from "../../components";
-import {DeletePostModal} from "../../components";
+import { SingleComment } from "../../components";
+import { Rate } from "../../components";
+import { EditPost } from "../../components";
+import { DeletePostModal } from "../../components";
 import {
   capitalizeFirstLetter,
   isOnlySpaces,
   separateStr_1ByStr_2,
 } from "../../helpers/helpers";
 import { addComment } from "../../store/actions/comment/commentActions";
+import useInnerWidth from "../../hooks/useInnerWidth";
 
 import styles from "./SinglePostShowStyle.module.css";
 
-
-
-function SinglePostShow({post}) {
+function SinglePostShow({ post }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();  
+  const dispatch = useDispatch();
+  const windowWidth = useInnerWidth();
   const [privacy, setPrivacy] = useState({
     value: post.privacy,
     label: capitalizeFirstLetter(post.privacy),
@@ -43,7 +43,7 @@ function SinglePostShow({post}) {
   const [postRatingByUser, setPostRatingByUser] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  
+
   const contentContainsSearch = post.content
     .toLowerCase()
     .includes(search.toLowerCase());
@@ -66,7 +66,7 @@ function SinglePostShow({post}) {
 
     dispatch(addComment(navigate, post._id, data));
     setComTextToBeAdded("");
-  }
+  };
 
   const contentComponent =
     search && contentContainsSearch
@@ -101,10 +101,6 @@ function SinglePostShow({post}) {
       replyBool={false}
     />
   ));
-
-  
-
-  
 
   return (
     <>
@@ -146,7 +142,7 @@ function SinglePostShow({post}) {
 
         {!showComments && (
           <Button
-            className={styles.comButton}
+            className={styles.viewComsBtn}
             variant="primary"
             onClick={() => setShowComments(true)}
           >
@@ -156,13 +152,13 @@ function SinglePostShow({post}) {
 
         {showComments && (
           <>
-              <Button
-                className={styles.comButton}
-                variant="primary"
-                onClick={() => setShowComments(false)}
-              >
-                Close comments
-              </Button>
+            <Button
+              className={styles.viewComsBtn}
+              variant="primary"
+              onClick={() => setShowComments(false)}
+            >
+              Close comments
+            </Button>
 
             {commentComponents}
           </>
@@ -188,27 +184,33 @@ function SinglePostShow({post}) {
               onClick={() => onAddComment()}
               disabled={!comTextToBeAdded}
             >
-              Comment
+              {windowWidth < 570 ? (
+                <FontAwesomeIcon icon={faPlay} />
+              ) : (
+                "Comment"
+              )}
             </Button>
           </InputGroup>
-          {user._id === post.author && (
-            <>
-              <Button
-                className={styles.deleteButton}
-                variant="info"
-                onClick={() => setShowEditModal(true)}
-              >
-                <FontAwesomeIcon icon={faEdit} />
-              </Button>
-              <Button
-                className={styles.deleteButton}
-                variant="danger"
-                onClick={() => setShowDeleteModal(true)}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-              </Button>
-            </>
-          )}
+          <div className={styles.buttonsContainer}>
+            {user._id === post.author && (
+              <>
+                <Button
+                  className={styles.buttonIcon}
+                  variant="info"
+                  onClick={() => setShowEditModal(true)}
+                >
+                  <FontAwesomeIcon icon={faEdit} />
+                </Button>
+                <Button
+                  className={styles.buttonIcon}
+                  variant="danger"
+                  onClick={() => setShowDeleteModal(true)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </>

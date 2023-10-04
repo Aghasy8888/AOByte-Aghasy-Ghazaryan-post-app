@@ -42,3 +42,7 @@
     background-color: #eceeef;
     border-color: #ddd;
   } 
+
+  @media (max-width: 570px) {
+    
+  }
