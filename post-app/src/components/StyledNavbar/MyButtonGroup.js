@@ -5,12 +5,17 @@ import { logout } from '../../store/actions/user/userActions';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function MyButtonGroup() {
+export default function MyButtonGroup({setIsActive}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(
         (state) => state.authReducer.isAuthenticated
       );
+
+      const handleClick = () => {
+        dispatch(logout(navigate));
+        setIsActive(false);
+      }
 
   return (
     <div className={styles.ButtonGroup}>
@@ -25,7 +30,7 @@ export default function MyButtonGroup() {
               </Dropdown.Item>
               <Dropdown.Item
                 eventKey="2"
-                onClick={() => dispatch(logout(navigate))}
+                onClick={handleClick}
               >
                 Logout
               </Dropdown.Item>

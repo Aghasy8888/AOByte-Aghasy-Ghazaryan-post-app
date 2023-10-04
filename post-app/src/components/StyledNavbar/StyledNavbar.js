@@ -55,7 +55,7 @@ const StyledNavbar = () => {
             setIsActive={setIsActive}
           />
           
-          <MyButtonGroup />
+          <MyButtonGroup setIsActive={setIsActive}/>
         </div>
       </div>
     </>
