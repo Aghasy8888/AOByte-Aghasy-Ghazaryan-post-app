@@ -2,9 +2,9 @@ import { getJWT } from "./auth";
 
 const defaultError = { message: "Something went wrong!" };
 
-async function request(url, method = "GET", body, navigate) {
+async function request(navigate, url, method = "GET", body ) {
   const jwt = await getJWT(navigate);
-
+  
   if (!jwt) {
     return Promise.reject(defaultError);
   }
@@ -23,11 +23,15 @@ async function request(url, method = "GET", body, navigate) {
 
   return fetch(url, config)
     .then((response) => response.json())
-    .then((result) => {
+    .then((result) => {    
       if (result.error) {
         throw result.error;
       }
+      
       return result;
+    })
+    .catch((error) => {
+      throw error;
     });
 }
 

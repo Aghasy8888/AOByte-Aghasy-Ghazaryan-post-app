@@ -1,27 +1,18 @@
-.username a {
-  display: block;
-  width: 67px;
-}
-
 .createPost {
   display: flex;
   column-gap: 10px;
-  margin: 40px 25px 0;
   padding: 10px 15px;
   background-color: rgb(73, 71, 71);
   color: aliceblue;
   border-radius: 10px;
+  margin-top: 40px;
+  max-width: 710px;
 }
 
-.titleAndXButton {
-  display: grid;
-  grid-template-columns: 15fr 1fr;
-  column-gap: 20px;
-  justify-content: end;
-}
-
-.title {
-  justify-self: center;
+.createPostCtn {
+  max-width: 700px;
+  margin: auto;
+  margin-bottom: 40px;
 }
 
 .btnWhatsOnYourMind {
@@ -30,16 +21,11 @@
   height: 42px;
   border-radius: 20px;
   text-align: start;
-  
 }
 
-.postBtn {
-  width: 100%;
-}
-
-.userAndDropDown {
-  margin-left: 2px;
-  margin-bottom: 8px;
+.username a {
+  display: block;
+  width: 67px;
 }
 
 .username {
@@ -58,28 +44,17 @@
   font-size: 18px;
 }
 
-.textArea {
-  margin-bottom: 20px;
-  margin-top: -2px;
-  background-color: rgb(217, 225, 233);
-  border: none;
-  font-size: 18px;
-}
-
-.createPostModal {
-  display: block;
-  margin: 40px 25px 0;
-  padding: 10px 15px;
-  position: initial;
-  background-color: rgb(73, 71, 71);
-  border-radius: 10px;
-  color: rgb(221, 225, 228);
-}
-
 p {
   color: rgb(228, 230, 235);
 }
 
-.dropdownButton {
-  margin-bottom: 20px;
+@media (max-width: 720px) {
+  .createPost {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    max-width: 660px;
+    margin: auto;
+    margin: 20px;
+  }
 }

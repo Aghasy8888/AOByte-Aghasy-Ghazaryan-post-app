@@ -1,10 +1,15 @@
 .postShowContainer {
     display: flex;
-    flex-direction: column;    
+    flex-direction: column; 
+    max-width: 750px;
+    margin: auto;
 }
 
 .postShow {    
+    display: flex;
     margin: 20px;
     min-height: fit-content;
+    flex-direction: column;
+    gap: 40px;
 }
 

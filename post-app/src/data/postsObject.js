@@ -3,7 +3,6 @@ import idGenerator from "../helpers/idGenarator";
 export const pool = [
   {
     id: idGenerator(),
-    title: "Ricardo Kaka",
     content: "Ricardo Kaka was Unstoppable in his Prime!",
     comments: [
       {
@@ -34,7 +33,6 @@ export const pool = [
   },
   {
     id: idGenerator(),
-    title: "Cristiano Ronaldo",
     content: "THANK YOU, CRISTIANO RONALDO | Real Madrid",
     comments: [
       {
@@ -63,7 +61,6 @@ export const pool = [
   },
   {
     id: idGenerator(),
-    title: "Lionel Messi",
     content: "Lionel Messi - King Of Football",
     comments: [
       {
@@ -92,7 +89,6 @@ export const pool = [
   },
   {
     id: idGenerator(),
-    title: "Pelé",
     content:
       "Pelé | Rise of the Brazilian Legend | The King of Football | Rising With Soccer",
     comments: [
@@ -122,7 +118,6 @@ export const pool = [
   },
   {
     id: idGenerator(),
-    title: "Zinedine Zidane",
     content: "No One Has Matched Zidane's Elegance So Far",
     comments: [
       {
@@ -153,7 +148,6 @@ export const pool = [
   },
   {
     id: idGenerator(),
-    title: "Kylian Mbappé",
     content: "Kylian Mbappé is simply a PHENOMENON",
     comments: [
       {
@@ -181,7 +175,6 @@ export const pool = [
   },
   {
     id: idGenerator(),
-    title: "Erling Haaland",
     content: "14 year old Erling Haaland was INSANE",
     comments: [
       {
@@ -212,7 +205,6 @@ export const pool = [
   },
   {
     id: idGenerator(),
-    title: "Henrik Mkhitaryan",
     content: "PLAYER CAM | HENRIKH MKHITARYAN VS MILAN",
     comments: [
       {

@@ -1,25 +1,24 @@
 .singlePostShow {
-  margin-top: 30px;
-  margin-bottom: 70px;
+  position: relative;
   background-color: rgb(73, 71, 71);
   padding: 10px;
-  border: 1px solid  rgb(73, 71, 71);
+  border: 1px solid rgb(73, 71, 71);
   border-radius: 6px;
+  overflow-wrap: break-word;
 }
-
-
 
 .postContent {
+  margin-top: 20px;
   font-size: large;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", "Calibri", "Trebuchet MS",
+    sans-serif;
   color: aliceblue;
 }
 
-h4 {
+h6,
+span {
   color: aliceblue;
 }
-
-
 
 .search {
   color: rgb(98, 0, 255);
@@ -33,17 +32,18 @@ h4 {
 }
 
 .inputGroup {
-  width: 50%;
+  width: 75% !important;
 }
 
-.comButton {
+.comButton,
+.viewComsBtn,
+.buttonIcon {
   height: fit-content;
   margin-top: auto;
 }
 
-.buttonSortContainer {
-  display: flex;
-  gap: 20px;
+.buttonIcon {
+  margin-left: 10px;
 }
 
 .titleAndRatingContainer {
@@ -56,12 +56,60 @@ h4 {
   min-width: 85px;
 }
 
-@media (max-width: 500px) {
-  .inputGroup {
-    width: 90%;
-  }
+.postInfoPrivacyContainer {
+  color: rgb(210, 221, 231);
+  display: flex;
+  justify-content: space-between;
+}
 
-  .comment {
-    width: 90%;
+.inputGroupAndBtnsContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttonsContainer {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+
+@media (max-width: 1040px) {
+}
+
+@media (max-width: 570px) {
+  .inputGroupAndBtnsContainer {
+    position: relative;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .inputGroup {
+    width: 100% !important;
+    right: 0px;
+    flex-wrap: nowrap;
+    height: 48px;
+  }
+  .inputGroup:first-child {
+    height: 30px;
+  }
+  .buttonIcon {
+    margin-right: 10px;
+    margin-left: 0;
+  }
+  .viewComsBtn {
+    height: 30px;
+    display: flex !important;
+    align-items: center;
+  }
+  .comButton {
+    margin-top: 10px;
+    height: 32px;
+  }
+  .formControl {
+    line-height: 0.1 !important;
+  }
+  .buttonsContainer {
+    position: static;
+    margin-top: 10px;
   }
 }

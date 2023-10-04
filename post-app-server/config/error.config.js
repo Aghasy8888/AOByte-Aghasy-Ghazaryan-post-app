@@ -81,6 +81,11 @@ const {uploadedFileSizeLimit} = require("./attachment.config");
     message: "Post is not found",
     status: 404
   },
+  commentNotFound: {
+    name: "commentNotFound",
+    message: "Comment is not found",
+    status: 404
+  },
     nothingToRemove: {
       name: "nothingToRemove",
       message: "There is nothing to remove",

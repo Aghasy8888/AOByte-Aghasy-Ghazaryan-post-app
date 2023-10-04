@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
-import { sortOptions } from '../PostList/sortOptions';
+import { sortOptions } from './sortOptions';
 import styles from './SortStyle.module.css';
 
 function Sort(props) {

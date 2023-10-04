@@ -1,46 +1,85 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Sort from "../Sort/Sort";
-import SingleComment from "../SingleComment/SingleComment";
-import Rate from "../Rate/Rate";
-import { order } from "../PostList/sortOptions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faEdit, faPlay } from "@fortawesome/free-solid-svg-icons";
+
+import { SingleComment } from "../../components";
+import { Rate } from "../../components";
+import { EditPost } from "../../components";
+import { DeletePostModal } from "../../components";
 import {
+  capitalizeFirstLetter,
   isOnlySpaces,
   separateStr_1ByStr_2,
-  sort as sortComments,
 } from "../../helpers/helpers";
-import idGenarator from "../../helpers/idGenarator";
+import { addComment } from "../../store/actions/comment/commentActions";
+import useInnerWidth from "../../hooks/useInnerWidth";
+
 import styles from "./SinglePostShowStyle.module.css";
 
-
-function SinglePostShow(props) {
+function SinglePostShow({ post }) {
   const navigate = useNavigate();
-  const isAuthenticated = useSelector(state => state.authReducer.isAuthenticated)
-  const [comments, setComments] = useState([...props.comments]);
-  const [sort, setSort] = useState({ value: "" });
+  const dispatch = useDispatch();
+  const windowWidth = useInnerWidth();
+  const [privacy, setPrivacy] = useState({
+    value: post.privacy,
+    label: capitalizeFirstLetter(post.privacy),
+  });
+  const [category, setCategory] = useState({
+    value: post.category,
+    label: capitalizeFirstLetter(post.category),
+  });
+  const [content, setContent] = useState("");
+  const user = useSelector((state) => state.authReducer.userInfo);
+  const isAuthenticated = useSelector(
+    (state) => state.authReducer.isAuthenticated
+  );
+  const search = useSelector((state) => state.postReducer.search);
+
   const [comTextToBeAdded, setComTextToBeAdded] = useState("");
   const [showComments, setShowComments] = useState(false);
   const [postRatingByUser, setPostRatingByUser] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
-  const { title, content, search } = props;
-  const titleContainsSearch = title
+  const contentContainsSearch = post.content
     .toLowerCase()
     .includes(search.toLowerCase());
 
-  const titleComponent =
-    search && titleContainsSearch
-      ? separateStr_1ByStr_2(title, search).map(
+  const onAddComment = () => {
+    if (!comTextToBeAdded || isOnlySpaces(comTextToBeAdded)) {
+      return;
+    }
+    if (!isAuthenticated) {
+      navigate("login");
+    }
+    setShowComments(true);
+
+    const data = {
+      content: comTextToBeAdded,
+      authorName: user.name,
+      authorSurname: user.surname,
+      parentId: post._id,
+    };
+
+    dispatch(addComment(navigate, post._id, data));
+    setComTextToBeAdded("");
+  };
+
+  const contentComponent =
+    search && contentContainsSearch
+      ? separateStr_1ByStr_2(post.content, search).map(
           //the last item of the array returned by separateStr_1ByStr_2 is the original searched text
           (splittedPart, index) => {
-            const splittedTitle = separateStr_1ByStr_2(title, search);
+            const splittedContent = separateStr_1ByStr_2(post.content, search);
             const originalSearchedText =
-              splittedTitle[splittedTitle.length - 1];
+              splittedContent[splittedContent.length - 1];
 
-            if (index === splittedTitle.length - 2) {
+            if (index === splittedContent.length - 2) {
               return <span key={index}>{splittedPart}</span>;
-            } else if (index === splittedTitle.length - 1) {
+            } else if (index === splittedContent.length - 1) {
               return "";
             }
 
@@ -52,135 +91,129 @@ function SinglePostShow(props) {
             );
           }
         )
-      : title;
+      : post.content;
 
-  useEffect(() => {
-    setComments([...props.comments]);
-  }, [props.comments]);
-
-  const handleSort = (option) => {
-    setSort(option);
-    setComments((prevComments) => {
-      const commentsCopy = [...prevComments];
-      sortComments(option.value, commentsCopy, order);
-
-      return commentsCopy;
-    });
-  };
-
-  const deleteComment = (postId) => {
-    setComments((prevComments) => {
-      const commentsCopy = [...prevComments];
-      const updatedComments = commentsCopy.filter(
-        (comment) => comment.id !== postId
-      );
-
-      return updatedComments;
-    });
-  };
-
-  const addComment = () => {
-    if (!comTextToBeAdded || isOnlySpaces(comTextToBeAdded)) {
-      return;
-    }
-
-    if (!isAuthenticated) {
-      navigate('login');
-    }
-
-    setShowComments(true);
-
-    const commentToBeAdded = {
-      content: comTextToBeAdded,
-      id: idGenarator(),
-      rating: (Math.random() * 9 + 1).toFixed(0),
-    };
-
-    setComments((prevComments) => {
-      const updatedComments = [...prevComments, commentToBeAdded];
-
-      return updatedComments;
-    });
-
-    setComTextToBeAdded("");
-  };
-
-  const commentComponents = comments.map((comment, index) => (
+  const commentComponents = post.comments.map((comment, index) => (
     <SingleComment
       comment={comment}
       key={index}
-      deleteComment={deleteComment}
+      post={post}
+      replyBool={false}
     />
   ));
 
-  const isDisabled = comments.length === 0 || comments.length === 1;
-
   return (
-    <div className={styles.singlePostShow}>
-      <div className={styles.titleAndRatingContainer}>
-        <h4>{search ? titleComponent : title}</h4>
-        <h4>Rating {5}</h4>
-      </div>
-
-      <p className={styles.postContent}>{content}</p>
-
-      <Rate
-        name='post'
-        ratingByUser={postRatingByUser}
-        setRatingByUser={setPostRatingByUser}
-      />
-
-      {!showComments && (
-        <Button
-          className={styles.comButton}
-          variant="primary"
-          onClick={() => setShowComments(true)}
-        >
-          View all {commentComponents.length} comments
-        </Button>
+    <>
+      {showEditModal && (
+        <EditPost
+          content={{ data: content, setContent }}
+          privacy={{ data: privacy, setPrivacy }}
+          category={{ data: category, setCategory }}
+          setShowModal={setShowEditModal}
+          post={post}
+        />
       )}
 
-      {showComments && (
-        <>
-          <div className={styles.buttonSortContainer}>
+      {showDeleteModal && (
+        <DeletePostModal post={post} setShowDeleteModal={setShowDeleteModal} />
+      )}
+
+      <div className={styles.singlePostShow}>
+        <div className={styles.postInfoPrivacyContainer}>
+          <div>
+            <span>
+              {post.authorName} {post.authorSurname}
+            </span>
+            <span> (Rating {post.rating.toFixed(1)})</span>
+          </div>
+          <div>{capitalizeFirstLetter(post.privacy)}</div>
+        </div>
+
+        <p className={styles.postContent}>
+          {search ? contentComponent : post.content}
+        </p>
+
+        <Rate
+          post={post}
+          name="post"
+          ratingByUser={postRatingByUser}
+          setRatingByUser={setPostRatingByUser}
+        />
+
+        {!showComments && (
+          <Button
+            className={styles.viewComsBtn}
+            variant="primary"
+            onClick={() => setShowComments(true)}
+          >
+            View all {commentComponents.length} comments
+          </Button>
+        )}
+
+        {showComments && (
+          <>
             <Button
-              className={styles.comButton}
+              className={styles.viewComsBtn}
               variant="primary"
               onClick={() => setShowComments(false)}
             >
               Close comments
             </Button>
-            <Sort isDisabled={isDisabled} sort={sort} handleSort={handleSort} />
+
+            {commentComponents}
+          </>
+        )}
+        <div className={styles.inputGroupAndBtnsContainer}>
+          <InputGroup className={styles.inputGroup}>
+            <Form.Control
+              className={styles.formControl}
+              placeholder="Add a comment..."
+              value={comTextToBeAdded}
+              onChange={(event) => {
+                setComTextToBeAdded(event.target.value);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  onAddComment();
+                }
+              }}
+            />
+            <Button
+              className={styles.comButton}
+              variant={`${!comTextToBeAdded ? "secondary" : "primary"}`}
+              onClick={() => onAddComment()}
+              disabled={!comTextToBeAdded}
+            >
+              {windowWidth < 570 ? (
+                <FontAwesomeIcon icon={faPlay} />
+              ) : (
+                "Comment"
+              )}
+            </Button>
+          </InputGroup>
+          <div className={styles.buttonsContainer}>
+            {user._id === post.author && (
+              <>
+                <Button
+                  className={styles.buttonIcon}
+                  variant="info"
+                  onClick={() => setShowEditModal(true)}
+                >
+                  <FontAwesomeIcon icon={faEdit} />
+                </Button>
+                <Button
+                  className={styles.buttonIcon}
+                  variant="danger"
+                  onClick={() => setShowDeleteModal(true)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </Button>
+              </>
+            )}
           </div>
-
-          {commentComponents}
-        </>
-      )}
-
-      <InputGroup className={styles.inputGroup}>
-        <Form.Control
-          className={styles.formControl}
-          placeholder="Add a comment..."
-          value={comTextToBeAdded}
-          onChange={(event) => {
-            setComTextToBeAdded(event.target.value);
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              addComment();
-            }
-          }}
-        />
-        <Button
-          className={styles.comButton}
-          variant={`${!comTextToBeAdded ? "secondary" : "primary"}`}
-          onClick={() => addComment()}
-          disabled={!comTextToBeAdded}
-        >
-          Comment
-        </Button>
-      </InputGroup>
-    </div>
+        </div>
+      </div>
+    </>
   );
 }
 

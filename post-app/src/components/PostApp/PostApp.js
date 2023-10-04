@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
-import PostShow from '../PostShow/PostShow';
-import Search from '../Search/Search';
-import CreatePost from '../CreatePost/CreatePost';
+import React, { useEffect } from 'react';
+import {PostShow} from "../../components";
+import {Search} from '../../components';
+import {CreatePost} from '../../components';
+import { getPosts } from '../../store/actions/post/postActions';
 
-import { pool } from '../../data/postsObject';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import styles from "./PostAppStyle.module.css";
+
 
  function PostApp() {
-  const [postsToShow, setPostsToShow] = useState(pool);
-  const [search, setSearch] = useState('');
-  
-  const getFoundPosts = (foundPosts, search) => {
-    setPostsToShow(foundPosts);
-    setSearch(search);
-  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+      dispatch(getPosts(navigate));
+  }, []);
 
   return (
-    <div>  
-      <Search getFoundPosts={getFoundPosts}/>   
+    <div className={styles.postAppCtn}>  
+      <Search />   
       <CreatePost /> 
-      <PostShow postsToShow={postsToShow} search={search}/>
+      <PostShow />
     </div>
   );
 }

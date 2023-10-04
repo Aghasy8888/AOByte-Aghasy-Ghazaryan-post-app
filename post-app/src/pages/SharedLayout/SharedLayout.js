@@ -1,13 +1,20 @@
 import { Outlet } from "react-router-dom";
-import StyledNavbar from "../../components/StyledNavbar/StyledNavbar";
+import { StyledNavbar } from "../../components";
 
+import styles from "./SharedLayoutStyle.module.css";
 
 function SharedLayout() {
   return (
     <>
-      <StyledNavbar />
-      <Outlet />
+      <div className={styles.container}>
+        <StyledNavbar />        
+      </div>
+      <div>
+        <Outlet className={styles.outletContainer}/>
+      </div>
+      
     </>
   );
-};
+}
+
 export default SharedLayout;

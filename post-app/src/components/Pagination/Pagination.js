@@ -1,24 +1,26 @@
 import React, { memo } from "react";
-import PaginationItem from "../PaginationItem/PaginationItem";
+import {PaginationItem} from "../../components";
 import { arrayInRange, getPagesCut } from "../../helpers/helpers";
 import styles from './PaginationStyle.module.css'
+import useInnerWidth from "../../hooks/useInnerWidth";
 
 
 
 
-function Pagination({total, currentPage, handlePageChange}) {    
+function Pagination({total, currentPage, handlePageChange}) {  
+    const innerWidth = useInnerWidth();
     const numbOfPages = Math.ceil(total);
     const pagesCut = getPagesCut({
         numbOfPages,
-        numbOfPagesCut: 5,
+        numbOfPagesCut: innerWidth < 570 ? 4 : 5,
         currentPage,
     });
 
     const pages = arrayInRange(pagesCut.start, pagesCut.end);
-    const isFirstPage = currentPage === 1 || total === 0;
-    const isLastPage = currentPage === numbOfPages || total === 0;
+    const isFirstPage = currentPage === 1 || numbOfPages === 0;
+    const isLastPage = currentPage === numbOfPages || numbOfPages === 0;
 
-    if (total === 1) {
+    if (numbOfPages === 1) {
         handlePageChange(1)
     }
     
@@ -60,9 +62,10 @@ function Pagination({total, currentPage, handlePageChange}) {
             />
 
             <PaginationItem 
-                page={`Last (${total || 0})`}
+                page={`Last (${numbOfPages || 0})`}
+                numbOfPages={numbOfPages}
                 currentPage={currentPage}
-                handlePageChange={() => handlePageChange(total)}
+                handlePageChange={() => handlePageChange(numbOfPages)}
                 isDisabled={isLastPage}
             />
         </div>

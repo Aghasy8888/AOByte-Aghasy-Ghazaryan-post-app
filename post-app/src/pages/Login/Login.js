@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 import { login } from "../../store/actions/user/userActions";
@@ -11,6 +11,9 @@ import styles from "./LoginStyle.module.css";
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isAuthenticated = useSelector(
+    (state) => state.authReducer.isAuthenticated
+  );
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -19,6 +22,14 @@ function Login() {
   const [errors, setErrors] = useState({
     email: null,
     password: null,
+  });
+
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+      return;
+    }
   });
 
   const handleSubmit = () => {
@@ -32,7 +43,7 @@ function Login() {
     if (!isValidEmail(email)) {
       setErrors({
         email: "Invalid email",
-      })
+      });
     }
 
     if (isValidEmail(email) && password) {
@@ -67,6 +78,11 @@ function Login() {
                   placeholder="Enter email"
                   value={values.email}
                   onChange={handleChange}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      handleSubmit();
+                    }
+                  }}
                 />
                 {<Form.Text className="text-danger">{errors.email}</Form.Text>}
               </Form.Group>
@@ -79,6 +95,11 @@ function Login() {
                   value={values.password}
                   onChange={handleChange}
                   name="password"
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      handleSubmit();
+                    }
+                  }}
                 />
                 {
                   <Form.Text className="text-danger">

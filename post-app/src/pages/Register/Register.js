@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { register } from "../../store/actions/user/userActions";
 import { isValidEmail } from "../../helpers/helpers";
@@ -11,6 +11,9 @@ import styles from "./RegisterStyle.module.css";
 function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector(
+    (state) => state.authReducer.isAuthenticated
+  );
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -27,6 +30,13 @@ function Register() {
     surname: null,
   });
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+      return;
+    }
+  });
+
   const handleSubmit = () => {
     const { email, password, confirmPassword, name, surname } = values;
     let valid = true;
@@ -38,9 +48,9 @@ function Register() {
     } else if (password !== confirmPassword) {
       passwordMessage = "Passwords didn't match";
       valid = false;
-    } else if(!email || !name || !surname ) {
+    } else if (!email || !name || !surname) {
       valid = false;
-    } else if(!isValidEmail(email)) {
+    } else if (!isValidEmail(email)) {
       valid = false;
     }
 
@@ -55,7 +65,7 @@ function Register() {
     if (!isValidEmail(email)) {
       setErrors({
         email: "Invalid email",
-      })
+      });
     }
 
     if (valid) {

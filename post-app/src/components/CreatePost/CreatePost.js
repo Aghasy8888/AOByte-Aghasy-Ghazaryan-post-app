@@ -1,29 +1,58 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import { privacyOptions } from "./privacyOptions";
-
-import { Button, Dropdown, DropdownButton, Form, Modal } from "react-bootstrap";
+import { optionValues as privacyValues } from "./privacyOptions";
+import { optionValues as categoryValues } from "./categoryOptions";
+import { addPost, getPosts } from "../../store/actions/post/postActions";
+import {CreateEditPostModal} from "../../components";
+import { Button } from "react-bootstrap";
 import styles from "./CreatePostStyle.module.css";
+
 
 function CreatePost() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
-  const [privacy, setPrivacy] = useState({ value: "" });
-  const [postContent, setPostContent] = useState("");
+  const [privacy, setPrivacy] = useState({
+    value: privacyValues.PRIVATE,
+    label: "Private",
+  });
+  const [category, setCategory] = useState({
+    value: categoryValues.GENERAL,
+    label: "General",
+  });
+  const [content, setContent] = useState("");
   const isAuthenticated = useSelector(
     (state) => state.authReducer.isAuthenticated
   );
   const user = useSelector((state) => state.authReducer.userInfo);
-  console.log("userInfo", user);
-
-  const handlePrivacy = (option) => {
-    setPrivacy(option);
-  };
 
   const onPost = () => {
-    console.log("postContent", postContent);
+    content.trim();
+
+    const data = {
+      authorName: user.name,
+      authorSurname: user.surname,
+      content,
+      privacy: privacy.value,
+      category: category.value,
+    };
+
+    dispatch(addPost(navigate, data));
+    setShowModal(false);
+    setPrivacy({
+      value: privacyValues.PRIVATE,
+      label: "Private",
+    });
+    setCategory({
+      value: categoryValues.GENERAL,
+      label: "General",
+    });
+    dispatch(getPosts(navigate));
+    if (privacy.value === privacyValues.PRIVATE) {
+      navigate("/myPosts");
+    }
   };
 
   const showCreatePostModal = () => {
@@ -34,8 +63,18 @@ function CreatePost() {
     }
   };
 
+  const handlePrivacy = (option) => {
+    setPrivacy(option);
+  };
+  const handleCategory = (option) => {
+    setCategory(option);
+  };
+  const handleContent = (value) => {
+    setContent(value);
+  };
+
   return (
-    <>
+    <div className={styles.createPostCtn}>
       {!showModal && (
         <div className={styles.createPost}>
           <div className={isAuthenticated ? styles.username : styles.sighIn}>
@@ -56,69 +95,21 @@ function CreatePost() {
       )}
 
       {showModal && (
-        <div
-          className={`${styles.modal} ${styles.show} ${styles.createPostModal}`}
-        >
-          <Modal.Dialog>
-            <div className={styles.titleAndXButton}>
-              <Modal.Header className={styles.title}>
-                <Modal.Title>Create post</Modal.Title>
-              </Modal.Header>
-
-              <Button variant="secondary" onClick={() => setShowModal(false)}>
-                X
-              </Button>
-            </div>
-            <hr />
-
-            <div className={styles.userAndDropDown}>
-              <div className={styles.username}>
-                {user && `${user.name} ${user.surname}`}
-              </div>
-
-              <DropdownButton
-                className={styles.dropdownButton}
-                variant="primary"
-                title={privacy.value ? privacy.label : "Private"}
-                id="privacy"
-              >
-                {privacyOptions.map((option, index) => (
-                  <Dropdown.Item
-                    className={styles.dropdownItem}
-                    key={index}
-                    active={privacy.value === option.value}
-                    onClick={() => handlePrivacy(option)}
-                  >
-                    {option.label}
-                  </Dropdown.Item>
-                ))}
-              </DropdownButton>
-            </div>
-
-            <Modal.Body>
-              <Form.Control
-                className={styles.textArea}
-                as="textarea"
-                rows={5}
-                placeholder="What's on your mind?"
-                onChange={(event) => setPostContent(event.target.value)}
-              />
-            </Modal.Body>
-
-            <Modal.Footer>
-              <Button
-                className={styles.postBtn}
-                variant={`${!postContent ? "secondary" : "primary"}`}
-                disabled={!postContent}
-                onClick={onPost}
-              >
-                Post
-              </Button>
-            </Modal.Footer>
-          </Modal.Dialog>
-        </div>
+        <CreateEditPostModal
+          onAction={onPost}
+          contentValue={content}
+          content={{ data: content, handleContent }}
+          privacy={{ data: privacy, handlePrivacy }}
+          category={{ data: category, handleCategory }}
+          setShowModal={setShowModal}
+          modalnfo={{
+            submitBtn: "Post",
+            title: "Create post",
+          }}
+          disabled={!content.trim()}
+        />
       )}
-    </>
+    </div>
   );
 }
 

@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import "./App.css";
-import PostApp from "./components/PostApp/PostApp";
-import Login from "./pages/Login/Login";
-import SharedLayout from "./pages/SharedLayout/SharedLayout";
-import Register from "./pages/Register/Register";
-import NotFound from "./pages/NotFound/NotFound";
-import Spinner from "./components/Spinner/Spinner";
 import { useSelector } from "react-redux";
-import MyAccount from "./pages/MyAccount/MyAccount";
-import MyPosts from "./pages/MyPosts/MyPosts";
+
+import { PostApp } from "./components";
+import { Login } from "./pages";
+import {SharedLayout} from "./pages";
+import {Register} from "./pages";
+import {NotFound} from "./pages";
+import {Spinner} from "./components";
+import {MyAccount} from "./pages";
+import {MyPosts} from "./pages";
+import "./App.css";
 
 function App() {
   const showAuthSpinner = useSelector((state) => state.authReducer.loading);

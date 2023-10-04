@@ -1,0 +1,43 @@
+.deleteModalContainer {
+  width: 100%;
+  height: 100vh;
+  background: rgba(191, 226, 194, 0.5);
+  position: fixed;
+  z-index: 9999999;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.deleteModal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  max-width: 600px;
+  min-width: 255px;
+  padding: 10px 15px;
+  background-color: rgb(73, 71, 71);
+  border-radius: 7px;
+  color: rgb(221, 225, 228);
+}
+
+.deleteModal p {
+  margin-top: 5px;
+}
+
+.titleAndXButton {
+  display: grid;
+  grid-template-columns: 15fr 1fr;
+  column-gap: 20px;
+  justify-content: end;
+}
+
+.title {
+  justify-self: center;
+}
+
+.modalFooter {
+  gap: 10px;
+}

@@ -1,15 +1,17 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
-
-import { getUserInfo, logout } from "../../store/actions/user/userActions";
-import { useEffect } from "react";
-
+import { getUserInfo } from "../../store/actions/user/userActions";
+import { useEffect, useState } from "react";
+import xIcon from "../../../src/assets/X.png";
+import menuIcon from "../../assets/MenuIcon.png";
+import NavLinks from "./NavLinks";
+import MyButtonGroup from "./MyButtonGroup";
 import styles from "./StyledNavbarStyle.module.css";
 
 const StyledNavbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isActive, setIsActive] = useState(false);
   const isAuthenticated = useSelector(
     (state) => state.authReducer.isAuthenticated
   );
@@ -17,88 +19,46 @@ const StyledNavbar = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      dispatch(getUserInfo());
-      console.log("user", user);
+      dispatch(getUserInfo(navigate));
     }
   }, [getUserInfo, isAuthenticated]);
 
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.linksContainer}>
-        {user && (
+    <>
+      <nav className={styles.navbar}>
+        {user ? (
           <div className={styles.userInfo}>
             {user.name} {user.surname}
           </div>
-        )}
-        <NavLink
-          to="/"
-          className={({ isActive }) =>
-            isActive ? `${styles.link} ${styles.active}` : styles.link
-          }
-        >
-          Home
-        </NavLink>
-        {!isAuthenticated ? (
-          <>
-            <NavLink
-              to="/login"
-              className={({ isActive }) =>
-                isActive ? `${styles.link} ${styles.active}` : styles.link
-              }
-            >
-              Login
-            </NavLink>
+        ) : <div className={styles.logo}>Post<span className={styles.appSpan}>App</span></div>}
+        <NavLinks isAuthenticated={isAuthenticated} setIsActive={setIsActive} />
 
-            <NavLink
-              to="/register"
-              className={({ isActive }) =>
-                isActive ? `${styles.link} ${styles.active}` : styles.link
-              }
-            >
-              Register
-            </NavLink>
-          </>
-        ) : (
-          <>
-            <NavLink
-              to="/myAccount"
-              className={({ isActive }) =>
-                isActive ? `${styles.link} ${styles.active}` : styles.link
-              }
-            >
-              My Account
-            </NavLink>
+        <MyButtonGroup />
 
-            <NavLink
-              to="/myPosts"
-              className={({ isActive }) =>
-                isActive ? `${styles.link} ${styles.active}` : styles.link
-              }
-            >
-              My Posts
-            </NavLink>
-          </>
-        )}
+        <div className={styles.menuIcon} onClick={() => setIsActive(true)}>
+          <img alt="" src={menuIcon} />
+        </div>
+      </nav>
 
-        <div className={styles.ButtonGroup}>
-          {isAuthenticated && (
-            <DropdownButton
-              as={ButtonGroup}
-              title="Account"
-              id="bg-vertical-dropdown-1"
-            >
-              <Dropdown.Item eventKey="1">Change password</Dropdown.Item>
-              <Dropdown.Item
-                eventKey="2"
-                onClick={() => dispatch(logout(navigate))}
-              >
-                Logout
-              </Dropdown.Item>
-            </DropdownButton>
-          )}
+      <div
+        className={`${styles.mobileMenuCtn} ${
+          isActive ? styles.activeMenu : ""
+        }`}
+      >
+        <div className={styles.xIcon} onClick={() => setIsActive(false)}>
+          <img alt="" src={xIcon} />
+        </div>
+        <div className={styles.linksAndBtnGroupCtn}>
+          <NavLinks
+            isAuthenticated={isAuthenticated}
+            mobileIsActive={isActive}
+            setIsActive={setIsActive}
+          />
+          
+          <MyButtonGroup setIsActive={setIsActive}/>
         </div>
       </div>
-    </nav>
+    </>
   );
 };
 
