@@ -31,7 +31,7 @@ const StyledNavbar = () => {
             {user.name} {user.surname}
           </div>
         ) : <div className={styles.logo}>Post<span className={styles.appSpan}>App</span></div>}
-        <NavLinks isAuthenticated={isAuthenticated} setIsActive={setIsActive} />
+        <NavLinks isAuthenticated={isAuthenticated} />
 
         <MyButtonGroup />
 
@@ -58,6 +58,7 @@ const StyledNavbar = () => {
           <MyButtonGroup setIsActive={setIsActive}/>
         </div>
       </div>
+
     </>
   );
 };

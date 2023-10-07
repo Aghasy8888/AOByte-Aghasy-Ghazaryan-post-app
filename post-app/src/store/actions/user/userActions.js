@@ -76,3 +76,18 @@ export function getUserInfo(navigate) {
         })
     }
 }
+
+export function changePassword(navigate, data) {
+    
+    return (dispatch) => {
+        dispatch({type: actionTypes.AUTH_LOADING});
+
+        request(navigate, `${apiUrl}/user/password`, "PUT", data)
+        .then(() => {
+            dispatch({type: actionTypes.CHANGE_PASSWORD})
+        })
+        .catch(error => {
+            dispatch({type: actionTypes.AUTH_ERROR, error: error.message})
+        })
+    }
+}

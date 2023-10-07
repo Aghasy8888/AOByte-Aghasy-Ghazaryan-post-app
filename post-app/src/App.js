@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { PostApp } from "./components";
+import { ChangePassword, PostApp } from "./components";
 import { Login } from "./pages";
 import {SharedLayout} from "./pages";
 import {Register} from "./pages";
@@ -24,6 +24,7 @@ function App() {
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
               <Route path="myAccount" element={<MyAccount />} />
+              <Route path="changePassword" element={<ChangePassword />} />
               <Route path="myPosts" element={<MyPosts />} />
               <Route path="*" element={<NotFound />} />
             </Route>

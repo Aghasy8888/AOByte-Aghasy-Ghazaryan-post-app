@@ -15,8 +15,10 @@ import SinglePostShow from "./SinglePostShow/SinglePostShow";
 import Sort from "./Sort/Sort";
 import Spinner from "./Spinner/Spinner";
 import StyledNavbar from "./StyledNavbar/StyledNavbar";
+import ChangePassword from "./ChangePassword/ChangePassword";
 
 export {
+  ChangePassword,
   StyledNavbar,
   Spinner,
   Sort,

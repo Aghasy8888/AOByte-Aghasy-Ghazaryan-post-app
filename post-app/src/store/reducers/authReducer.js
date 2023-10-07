@@ -5,6 +5,7 @@ const defaultState = {
   isAuthenticated: checkLoginStatus(),
   loading: false,
   successMessage: null,
+  changePasswordSuccess: false,
   error: null,
   userInfo: null,
 };
@@ -25,6 +26,7 @@ const authReducer = (state = defaultState, action) => {
       return {
         ...state,
         loading: false,
+        changePasswordSuccess: state.changePasswordSuccess && false,
         error: action.error,
       };
     }
@@ -57,6 +59,15 @@ const authReducer = (state = defaultState, action) => {
         ...state,
         loading: false,
         userInfo: action.userInfo,
+      };
+    }
+
+    case actionTypes.CHANGE_PASSWORD: {
+      return {
+        ...state,        
+        loading: false,
+        changePasswordSuccess: true,
+        successMessage: "You have changed password successfully!",
       };
     }
 

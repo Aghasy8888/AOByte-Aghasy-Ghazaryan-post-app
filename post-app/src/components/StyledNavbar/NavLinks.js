@@ -12,7 +12,11 @@ function NavLinks({ isAuthenticated, setIsActive }) {
         className={({ isActive }) =>
           isActive ? `${styles.link} ${styles.active}` : styles.link
         }
-        onClick={() => setIsActive(false)}
+        onClick={() => {
+        if (setIsActive) {
+          setIsActive(false)
+        }  
+        }}
       >
         Home
       </NavLink>
@@ -23,7 +27,11 @@ function NavLinks({ isAuthenticated, setIsActive }) {
             className={({ isActive }) =>
               isActive ? `${styles.link} ${styles.active}` : styles.link
             }
-            onClick={() => setIsActive(false)}
+            onClick={() => {
+              if (setIsActive) {
+                setIsActive(false)
+              }  
+              }}
           >
             Login
           </NavLink>
@@ -33,7 +41,11 @@ function NavLinks({ isAuthenticated, setIsActive }) {
             className={({ isActive }) =>
               isActive ? `${styles.link} ${styles.active}` : styles.link
             }
-            onClick={() => setIsActive(false)}
+            onClick={() => {
+              if (setIsActive) {
+                setIsActive(false)
+              }  
+              }}
           >
             Register
           </NavLink>
@@ -45,7 +57,11 @@ function NavLinks({ isAuthenticated, setIsActive }) {
             className={({ isActive }) =>
               isActive ? `${styles.link} ${styles.active}` : styles.link
             }
-            onClick={() => setIsActive(false)}
+            onClick={() => {
+              if (setIsActive) {
+                setIsActive(false)
+              }  
+              }}
           >
             My Account
           </NavLink>
@@ -55,7 +71,11 @@ function NavLinks({ isAuthenticated, setIsActive }) {
             className={({ isActive }) =>
               isActive ? `${styles.link} ${styles.active}` : styles.link
             }
-            onClick={() => setIsActive(false)}
+            onClick={() => {
+              if (setIsActive) {
+                setIsActive(false)
+              }  
+              }}
           >
             My Posts
           </NavLink>

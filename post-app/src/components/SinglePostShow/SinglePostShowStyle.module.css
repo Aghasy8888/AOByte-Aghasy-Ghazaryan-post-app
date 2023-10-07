@@ -60,6 +60,8 @@ span {
   color: rgb(210, 221, 231);
   display: flex;
   justify-content: space-between;
+  cursor: default;
+  font-weight: bold;
 }
 
 .inputGroupAndBtnsContainer {

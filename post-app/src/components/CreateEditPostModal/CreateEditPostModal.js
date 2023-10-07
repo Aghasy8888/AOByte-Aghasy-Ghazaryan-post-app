@@ -5,8 +5,9 @@ import { privacyOptions } from "../CreatePost/privacyOptions";
 import { categoryOptions } from "../CreatePost/categoryOptions";
 
 import { Button, Dropdown, DropdownButton, Form, Modal } from "react-bootstrap";
-import styles from "./CreateEditPostModalStyle.module.css";
 import { SET_SOMETHING_CHANGED } from "../../store/actions/other/otherActionTypes";
+
+import styles from "./CreateEditPostModalStyle.module.css";
 
 function CreateEditPostModal(props) {
   const {

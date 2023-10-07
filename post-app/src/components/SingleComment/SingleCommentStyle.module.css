@@ -8,6 +8,7 @@
 .userAndRateContainer {
   display: flex;
   justify-content: space-between;
+  cursor: default;
 }
 
 .username {

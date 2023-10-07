@@ -100,6 +100,11 @@ function Register() {
                   placeholder="Enter your name"
                   value={values.name}
                   onChange={handleChange}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      handleSubmit(navigate);
+                    }
+                  }}
                 />
                 {<Form.Text className="text-danger">{errors.name}</Form.Text>}
               </Form.Group>
@@ -111,6 +116,11 @@ function Register() {
                   placeholder="Enter your surname"
                   value={values.surname}
                   onChange={handleChange}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      handleSubmit(navigate);
+                    }
+                  }}
                 />
                 {
                   <Form.Text className="text-danger">
@@ -127,6 +137,11 @@ function Register() {
                   placeholder="Enter email"
                   value={values.email}
                   onChange={handleChange}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      handleSubmit(navigate);
+                    }
+                  }}
                 />
                 {<Form.Text className="text-danger">{errors.email}</Form.Text>}
               </Form.Group>
@@ -139,6 +154,11 @@ function Register() {
                   value={values.password}
                   onChange={handleChange}
                   name="password"
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      handleSubmit(navigate);
+                    }
+                  }}
                 />
                 {
                   <Form.Text className="text-danger">
@@ -158,6 +178,11 @@ function Register() {
                   value={values.confirmPassword}
                   onChange={handleChange}
                   name="confirmPassword"
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      handleSubmit(navigate);
+                    }
+                  }}
                 />
                 <Form.Text className="text-danger">
                   {errors.confirmPassword}

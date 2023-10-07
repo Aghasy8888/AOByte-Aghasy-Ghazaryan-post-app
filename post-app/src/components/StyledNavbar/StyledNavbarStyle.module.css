@@ -27,6 +27,7 @@
 
 .userInfo {
   color: rgb(209, 240, 210);
+  cursor: default;
 }
 
 .linksContainer {
@@ -43,6 +44,7 @@
 }
 
 .menuIcon {
+  cursor: pointer;
   display: none;
 }
 .mobileMenuCtn {
@@ -99,6 +101,7 @@
     position: fixed;
     top: 48px;
     right: 68px;
+    cursor: pointer;
   }
   .mobileMenuCtn .linksContainer {
     display: flex;
