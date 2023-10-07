@@ -14,28 +14,35 @@ export default function MyButtonGroup({setIsActive}) {
 
       const handleClick = () => {
         dispatch(logout(navigate));
-        setIsActive(false);
-      }
+        if (setIsActive) {
+          setIsActive(false);
+        }    
+      };
 
   return (
     <div className={styles.ButtonGroup}>
-          {isAuthenticated && (
-            <DropdownButton
-              as={ButtonGroup}
-              title="Account"
-              id="bg-vertical-dropdown-1"
-            >
-              <Dropdown.Item eventKey="1">
-                Change password
-              </Dropdown.Item>
-              <Dropdown.Item
-                eventKey="2"
-                onClick={handleClick}
-              >
-                Logout
-              </Dropdown.Item>
-            </DropdownButton>
-          )}
-        </div>
-  )
+           {isAuthenticated && (
+        <DropdownButton
+          as={ButtonGroup}
+          title="Account"
+          id="bg-vertical-dropdown-1"
+        >
+          <Dropdown.Item
+            eventKey="1"
+            onClick={() => {
+              navigate("changePassword");
+              if (setIsActive) {
+                setIsActive(false);
+              }
+            }}
+          >
+            Change password
+          </Dropdown.Item>
+          <Dropdown.Item eventKey="2" onClick={handleClick}>
+            Logout
+          </Dropdown.Item>
+        </DropdownButton>
+      )}
+    </div>
+  );
 }
