@@ -1,0 +1,53 @@
+@import '../../scss/mixins';
+
+.container {
+  @include containerStyles();
+  }
+
+  .card {
+    display: block;
+    position: initial;
+    background-color: rgb(73, 71, 71);
+    border-radius: 10px;
+    color: rgb(221, 225, 228);
+  }
+
+   .titleAndXButton {
+    display: grid;
+    grid-template-columns: 15fr 1fr;
+    column-gap: 20px;
+    justify-content: end;
+  }
+  
+  .title {
+    justify-self: center;
+  }
+
+.usernameAndInputsCtn {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+  }
+
+
+ .username {
+    min-width: 155px;
+    padding-top: 5px;
+    margin-bottom: 3px;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    cursor: default;
+  }
+
+ .submitBtn {
+    width: 100%;
+    margin-top: 20px !important;
+  }  
+  
+  @media (max-width: 425px) {
+    .modalTitle {
+      font-size: 17px !important;
+    }
+  }
+  

@@ -36,7 +36,7 @@
 .dropDowns {
   display: flex;
   justify-content: start;
-  gap: 20px;
+  column-gap: 20px;
 }
 
 .dropdownButton {

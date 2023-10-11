@@ -1,7 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
-import {Rate} from "../../components";
+import { Rate } from "../../components";
 
 import { Button } from "react-bootstrap";
 import styles from "./SingleCommentStyle.module.css";
@@ -15,7 +15,7 @@ function ContentAndButtons({
   setShowDeleteModal,
   post,
   user,
-  replyBool
+  replyBool,
 }) {
   return (
     <div className={styles.comment}>
@@ -29,26 +29,28 @@ function ContentAndButtons({
           post={post}
         />
 
-        {!replyBool && (
-          <Button variant="primary" onClick={() => setShowReplyInput(true)}>
-            Reply
-          </Button>
-        )}
+        <div className={styles.buttonsCtn}>
+          {!replyBool && (
+            <Button variant="primary" onClick={() => setShowReplyInput(true)}>
+              Reply
+            </Button>
+          )}
 
-        {user._id === comment.author && (
-          <>
-            <Button
-              className={styles.deleteButton}
-              variant="info"
-              onClick={() => setShowEditModal(true)}
-            >
-              <FontAwesomeIcon icon={faEdit} />
-            </Button>
-            <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
-              <FontAwesomeIcon icon={faTrash} />
-            </Button>
-          </>
-        )}
+          {user._id === comment.author && (
+            <>
+              <Button
+                className={styles.deleteButton}
+                variant="info"
+                onClick={() => setShowEditModal(true)}
+              >
+                <FontAwesomeIcon icon={faEdit} />
+              </Button>
+              <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
+                <FontAwesomeIcon icon={faTrash} />
+              </Button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

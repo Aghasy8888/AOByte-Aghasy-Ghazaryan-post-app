@@ -1,16 +1,19 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { ratePost } from "../../store/actions/post/postActions";
 import { rateComment } from "../../store/actions/comment/commentActions";
-
+import useInnerWidth from "../../hooks/useInnerWidth";
 import { Button, Form } from "react-bootstrap";
 import styles from "./RateStyle.module.css";
+
 
 function Rate({ ratingByUser, setRatingByUser, name, post, comment }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const innerWidth = useInnerWidth();
 
   const onRate = (rating) => {
     if (rating !== "" && rating >= 0 && rating <= 5) {
@@ -57,7 +60,7 @@ function Rate({ ratingByUser, setRatingByUser, name, post, comment }) {
         onClick={() => onRate(ratingByUser)}
         disabled={!ratingByUser}
       >
-        Rate
+        {innerWidth < 370 ? <FontAwesomeIcon icon={faPlay} /> : "Rate"}
       </Button>
     </div>
   );

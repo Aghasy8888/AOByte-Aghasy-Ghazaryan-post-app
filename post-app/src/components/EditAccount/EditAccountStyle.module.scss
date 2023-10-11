@@ -1,0 +1,13 @@
+.active {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

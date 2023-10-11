@@ -16,8 +16,18 @@ import Sort from "./Sort/Sort";
 import Spinner from "./Spinner/Spinner";
 import StyledNavbar from "./StyledNavbar/StyledNavbar";
 import ChangePassword from "./ChangePassword/ChangePassword";
+import Card from "./Card/Card";
+import AccountInfo from "./AccountInfo/AccountInfo";
+import ModalCloseBtn from "./Card/ModalCloseBtn";
+import EditAccount from "./EditAccount/EditAccount";
+import SingleInput from "./SingleInput/SingleInput";
 
 export {
+  SingleInput,
+  EditAccount,
+  ModalCloseBtn,
+  AccountInfo,
+  Card,
   ChangePassword,
   StyledNavbar,
   Spinner,

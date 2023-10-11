@@ -13,7 +13,9 @@ export default function useEditPostEffects(
   post,
   disableBecauseOfContent
 ) {
-  const somethingChanged = useSelector((state) => state.otherReducer.somethingChanged)
+  const somethingChanged = useSelector(
+    (state) => state.otherReducer.somethingChanged
+  );
   const [justOpenedModal, setJustOpenedModal] = useState(true);
   const searchData = useSelector((state) => state.postReducer.searchData);
   const location = useLocation();
@@ -38,18 +40,13 @@ export default function useEditPostEffects(
 
   useEffect(() => {
     return () => {
-
-        if (somethingChanged) {
-          console.log("something changed", somethingChanged);
-
-          if (urlSegment) {
-            console.log(222222222222);
-            dispatch(getPosts(navigate, searchData, true));
-          } else {
-            console.log(111111111111111);
-            dispatch(getPosts(navigate, searchData));
-          }
+      if (somethingChanged) {
+        if (urlSegment) {
+          dispatch(getPosts(navigate, searchData, true));
+        } else {
+          dispatch(getPosts(navigate, searchData));
         }
+      }
     };
   }, []);
 

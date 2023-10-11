@@ -62,9 +62,16 @@ const authReducer = (state = defaultState, action) => {
       };
     }
 
+    case actionTypes.UPDATE_USER_INFO: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+
     case actionTypes.CHANGE_PASSWORD: {
       return {
-        ...state,        
+        ...state,
         loading: false,
         changePasswordSuccess: true,
         successMessage: "You have changed password successfully!",

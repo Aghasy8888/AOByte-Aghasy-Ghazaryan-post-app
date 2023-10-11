@@ -1,19 +1,29 @@
-import { SET_SOMETHING_CHANGED } from "../actions/other/otherActionTypes";
+import  * as actionTyes  from "../actions/other/otherActionTypes";
 
 const defaultState = {
-    somethingChanged: false,
-  };
+  somethingChanged: false,
+  editIsActive: false,
+};
 
-  const otherReducer = (state = defaultState, action) => {
-    switch (action.type) {
-        case SET_SOMETHING_CHANGED: {
-            return {
-                somethingChanged: action.value,
-            }
-        }    
-            default:
-                return state;
+const otherReducer = (state = defaultState, action) => {
+  switch (action.type) {
+    case actionTyes.SET_SOMETHING_CHANGED: {
+      return {
+        ...state,
+        somethingChanged: action.value,
+      };
     }
-  }
 
-  export default otherReducer;
+    case actionTyes.SET_EDIT_IS_ACTIVE: {
+      return {
+        ...state,
+        editIsActive: action.value,
+      };
+    }
+
+    default:
+      return state;
+  }
+};
+
+export default otherReducer;
